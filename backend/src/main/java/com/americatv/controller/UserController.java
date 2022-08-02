@@ -20,7 +20,7 @@ public class UserController {
 	
 	@GetMapping("/")
 	public String index() {
-
+		// git branch test
 		return "안녕";
 	}
 	
