@@ -20,7 +20,7 @@ public class UserService {
 		Optional<User> user = userDAO.findByUserId(id);
 
 		user.ifPresent(selectUser -> {
-			System.out.println(selectUser.getUSER_NICK());
+			System.out.println(selectUser.getUserNick());
 		});
 
 		return user;
