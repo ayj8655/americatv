@@ -11,5 +11,7 @@ import com.americatv.entity.User;
 public interface UserDAO extends JpaRepository<User, Integer> {
 	
 	public Optional<User> findByUserId(String id);
+	
+	
 
 }

@@ -34,26 +34,15 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor // 모든 필드 값을 파라미터로 받는 생성자를 만듦
 @NoArgsConstructor(access = AccessLevel.PROTECTED) // 파라미터가 없는 기본 생성자를 생성
-@JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class) // 양방향 관계 엔티티 사이클 방지
-@Entity(name = "blacklist")
-public class BlackList {
-	
+@Entity(name = "category")
+public class Category {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY) // 이건 오토인크리먼트일때만 넣어주는거
-	@Column(name = "BLACK_CD")
-	private Integer blackCd;
+	@Column(name = "CATE_CD")
+	private Integer cateCd;
 
-	@Column(name = "USER_CD")
-	private Integer userCd;
-	
-	@Column(name = "BLACK_DT")
-	@Temporal(TemporalType.TIMESTAMP) // 이거 써야 자동으로 시간 넣어줌
-	private Date blackDt;
-
-	@Column(name = "BLACK_USER")
-	private String blackUser;
-	
-	
+	@Column(name = "CATE_NM")
+	private String cateNm;	
 
 }

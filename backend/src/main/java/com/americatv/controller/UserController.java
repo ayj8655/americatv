@@ -19,10 +19,8 @@ public class UserController {
 	@Autowired
 	public UserService userService;
 	
-	
 	@GetMapping("/")
 	public String index() {
-		// git branch test
 		return "안녕";
 	}
 	
