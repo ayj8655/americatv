@@ -40,7 +40,7 @@ public class BookMark {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY) // 이건 오토인크리먼트일때만 넣어주는거
 	@Column(name = "MARK_CD")
-	private Integer marCd;
+	private Integer markCd;
 
 	@Column(name = "USER_CD")
 	private Integer userCd;
