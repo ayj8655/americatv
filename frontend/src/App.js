@@ -1,16 +1,19 @@
 import React from 'react';
-import logo from './logo.svg';
-import TOC from "./components/TOC";
-import Content from "./components/Content";
-import Subject from './components/Subject';
-import Header from './components/Head';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Login from './components/Login';
+import Main from './components/Main';
 import './App.css';
 
 function App(){
   return(
     <div className='Wrapper'>
-      <Login></Login>
+      <BrowserRouter>
+          <Routes>
+            <Route path='/' element={<Main/>}></Route>
+            <Route path='/login' element={<Login/>}></Route>
+          </Routes>      
+      </BrowserRouter>
+      
     </div>
   );
 }

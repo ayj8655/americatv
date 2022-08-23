@@ -176,7 +176,7 @@ footer .copyright{
     position: absolute;
     width: 24px;
     height: 24px;
-    background: url(../images/logo192.png) 50% 50% no-repeat;
+    background: url(../images/naver.svg) 50% 50% no-repeat;
     background-size: 100% 100%;
     top: 14px;
     left: 14px;
@@ -186,7 +186,7 @@ footer .copyright{
     position: absolute;
     width: 24px;
     height: 24px;
-    background: url(../images/logo192.png) 50% 50% no-repeat;
+    background: url(../images/kakao.svg) 50% 50% no-repeat;
     background-size: 100% 100%;
     top: 14px;
     left: 14px;
@@ -196,7 +196,7 @@ footer .copyright{
     position: absolute;
     width: 24px;
     height: 24px;
-    background: url(../images/logo192.png) 50% 50% no-repeat;
+    background: url(../images/apple.svg) 50% 50% no-repeat;
     background-size: 100% 100%;
     top: 14px;
     left: 14px;

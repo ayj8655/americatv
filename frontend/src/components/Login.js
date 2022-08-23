@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import '../css/Login.css';
 import logo from'../images/logo192.png';
 
@@ -6,7 +7,7 @@ function Login(){
     return (
     <body>
         <div className='main'>
-            <h2>America TV</h2>
+            <h2><Link to="/main">America TV</Link></h2>
             <p className='info'>
                 로그인 후 이용하실수 있습니다.
             </p>
