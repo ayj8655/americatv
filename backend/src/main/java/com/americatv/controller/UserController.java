@@ -15,6 +15,13 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.americatv.entity.BlackList;
+import com.americatv.entity.User;
+import com.americatv.service.BlackListService;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -72,6 +79,9 @@ public class UserController {
 
 	
 	
+	@Autowired
+	public BlackListService blacklistservice;
+	
 	@GetMapping("/")
 	public String index() {
 		return "안녕";
@@ -91,7 +101,6 @@ public class UserController {
 		return user.toString();
 	}
 
-	
 	
 	@PostMapping("/signup")
     public ResponseEntity<User> signup(
