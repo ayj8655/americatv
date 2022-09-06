@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -18,6 +20,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import javax.persistence.*;
+
+import java.util.Set;
 
 @Data
 /*
@@ -70,5 +76,13 @@ public class User {
 
 	@Column(name = "USER_LAST_DT")
 	private Date userLastDt;
+	
+	@ManyToMany
+	@JoinTable(
+	  name = "user_authority",
+	  joinColumns = {@JoinColumn(name = "user_cd", referencedColumnName = "user_cd")},
+	  inverseJoinColumns = {@JoinColumn(name = "authority_name", referencedColumnName = "authority_name")})
+	private Set<Authority> authorities;
+	
 
 }

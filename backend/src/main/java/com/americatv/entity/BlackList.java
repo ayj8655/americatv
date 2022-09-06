@@ -37,7 +37,7 @@ import lombok.NoArgsConstructor;
 @JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class) // 양방향 관계 엔티티 사이클 방지
 @Entity(name = "blacklist")
 public class BlackList {
-	
+
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY) // 이건 오토인크리먼트일때만 넣어주는거
