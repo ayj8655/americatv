@@ -4,10 +4,13 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.americatv.entity.BlackList;
 import com.americatv.entity.User;
+import com.americatv.service.BlackListService;
 import com.americatv.service.UserService;
 
 
@@ -18,6 +21,9 @@ public class UserController {
 	
 	@Autowired
 	public UserService userService;
+	
+	@Autowired
+	public BlackListService blacklistservice;
 	
 	@GetMapping("/")
 	public String index() {
@@ -33,6 +39,5 @@ public class UserController {
 		System.out.println(user);
 		return user.toString();
 	}
-	
-	
+
 }
