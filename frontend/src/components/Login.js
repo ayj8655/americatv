@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+
 // import styles from '../css/Login.module.css';
 import logo from'../images/logo192.png';
 
@@ -26,7 +27,7 @@ function Login(){
         <div className='account_area'>
            <a href="#">아이디 찾기</a><sapn class='bar'>|</sapn>
            <a href="#">비밀번호 찾기</a><sapn class='bar'>|</sapn>
-           <a href="#">회원가입</a>
+           <a href="Agreement">회원가입</a>
         </div>
 
         <div className='signup_area'>

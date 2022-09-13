@@ -1,0 +1,19 @@
+.SignupLogo {
+    width: 200px;
+    height: 35px;
+    margin-bottom: 40px;
+}
+
+.SignupLogo h2{
+    overflow: hidden;
+    display: block;
+    height: 100%;
+    text-indent: -1111px;
+    color: #1599ff;  
+}
+
+.signup_link_main {
+    display: block;
+    background: url(../images/america_tv.png) 50% 50% no-repeat;
+    background-size: 200px 60px;
+}
