@@ -78,6 +78,7 @@ public class SecurityConfig{
                 .antMatchers("/ayj/hello").permitAll()
                 .antMatchers("/ayj/authenticate").permitAll()
                 .antMatchers("/ayj/signup").permitAll()
+                .antMatchers("/ayj/pass/**").permitAll()
 
                 .anyRequest().authenticated()
 
