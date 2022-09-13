@@ -1,0 +1,436 @@
+html, body, div, span, iframe, h1, h2, h3, h4, h5, h6, p, a, address, big, del, em, img, s, small, strong, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, caption, tbody, tfoot, thead, tr, article, aside, canvas, embed, footer, header, menu, nav, section, summary, audio, video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-family: "NGBS", verdana, applegothic, sans-serif, "Malgun Gothic" , "맑은 고딕" , "dotum";
+    vertical-align: baseline;
+}
+
+body {
+    background-color: #fff;
+    font-size: 12px;
+    line-height: 1.2;
+}
+
+article {
+    display: block;
+}
+
+a, textarea {
+    color: inherit;
+    font-family: inherit;
+    text-decoration: none;
+}
+
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: #fff;
+    width: 100%;
+    min-width: 1184px;
+    border-bottom: 1px solid #f0f0f0;
+    z-index: 999;
+}
+
+.header .inner_header {
+    position: relative;
+    width: 1184px;
+    height: 64px;
+    margin: 0 auto;
+}
+
+.header .icon {
+    display: block;
+    background: url(../images/america_tv.png) 50% 50% no-repeat;
+    background-size: 136px 40px;
+    width: 136px;
+    height: 65px;
+    font: 0/0;
+}
+
+.header .search_box {
+    position: absolute;
+    top: 12px;
+    left: 156px;
+}
+
+.header .search_box .input_search_box {
+    float: left;
+    /* position: relative; */
+}
+
+.header .search_box .input_search_box input[type=text] {
+    width: 280px;
+    height: 40px;
+    padding: 0 42px 0 12px;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    box-sizing: border-box;
+    color: #000;
+    line-height: 40px;
+    font-size: 14px;
+    font-family: inherit;
+    transition: all .2s ease;
+}
+
+.header .search_box .btn_search_box {
+    float: left;
+    height: 40px;
+    margin-left: 8px;
+    padding: 0 12px;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    color: #555;
+    background-color: #fff;
+    font-size: 13px;
+    line-height: 38px;
+}
+
+.header .util {
+    position: absolute;
+    top: 15px;
+    right: 0;
+}
+
+.header .util button {
+    padding: 0;
+    border: 0;
+    background-color: #fff;
+    display: block;
+    width: 35px;
+    height: 35px;
+    text-align: center;
+}
+
+.header .util>* {
+    float: left;
+    margin-right: 15px;
+}
+
+.header .util span {
+    display: inline-block;
+    font: 0/0 a;
+    vertical-align: middle;
+}
+
+.header .util .favor span {
+    background: url(../images/favor.svg) 50% 50% no-repeat;
+    background-size: 100% 100%;
+    width: 28px;
+    height: 18px;
+}
+
+.header .util .on_air span {
+    background: url(../images/on_air.svg) 50% 50% no-repeat;
+    background-size: 100% 100%;
+    width: 28px;
+    height: 18px;
+}
+
+.header .util .alarm span {
+    background: url(../images/alarm.svg) 50% 50% no-repeat;
+    background-size: 100% 100%;
+    width: 17px;
+    height: 21px;
+}
+
+.header .log_area {
+    display: flex;
+    align-items: center;
+    float: left;
+    position: relative;
+    margin-right: 0;
+}
+
+.header .alarm_area {
+    float: left;
+    margin: 0 18px 0 0;
+}
+
+.header .log_area .nickname {
+    display: inline-block;
+    position: relative;
+    padding: 11px 9px 8px 0;
+    color: #466dda;
+    line-height: 100%;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.header .log_area .nickname em {
+    position: absolute;
+    top: 17px;
+    right: 0;
+    overflow: hidden;
+    background: url(../images/img_main.png) -23px -7px no-repeat;
+    width: 5px;
+    height: 3px;
+    font-size: 1px;
+    line-height: 0;
+    text-indent: -9999px;
+}
+
+
+
+
+
+.container {
+    position: relative;
+    width: 1184px;
+    margin: 0 auto;
+    z-index: 11;
+}
+
+.sidebar {
+    position: absolute;
+    top: 65px;
+    bottom: 0;
+    background: #f8fafc;
+    width: 251px;
+    border-right: 1px solid #f0f0f0;
+    z-index: 11;
+}
+
+.sidebar button {
+    background-color: transparent;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    vertical-align: top;
+    outline: none;
+    cursor: pointer;
+    font-family: inherit;
+}
+
+.sidebar ul, ol, li {
+    list-style: none;
+}
+
+.sidebar .sidebar_contents {
+    background: #f8fafc;
+    width: 180px;
+    padding: 0 35px 80px 36px;
+}
+
+.sidebar .sidebar_contents article:first-child {
+    position: relative;
+    z-index: 5;
+}
+
+.sidebar .user_box {
+    padding: 24px 0 0;
+}
+
+.sidebar .user_profile_image {
+    background: url(../images/profile_image.jpg);
+    overflow: hidden;
+    background-size: cover;
+    background-position: 50% 50%;
+    background-repeat: no-repeat;
+    width: 83px;
+    height: 83px;
+    margin: 0 auto;
+    border: 1px solid #e1e1e1;
+    border-radius: 50%;
+}
+
+.sidebar .user_info {
+    position: relative;
+    margin-top: 10px;
+    text-align: center;
+}
+
+.sidebar .user_nick {
+    font-size: 0;
+    line-height: 0;
+}
+
+.sidebar .user_nick h2 {
+    display: inline-block;
+    max-width: calc(100% - 26px);
+    color: #000;
+    font-size: 15px;
+    font-weight: bold;
+    letter-spacing: -.5px;
+    line-height: 1.2;
+}
+
+.sidebar .user_id {
+    color: #aaa;
+    font-size: 13px;
+}
+
+.sidebar .write_board {
+    display: block;
+    position: relative;
+    width: 100%;
+    height: 44px;
+    margin-top: 28px;
+    border-radius: 4px;
+    border: 1px solid #4279ff;
+    color: #4279ff;
+    line-height: 42px;
+    text-align: center;
+    background-color: transparent;
+    padding: 0;
+    vertical-align: top;
+    outline: none;
+    cursor: pointer;
+    font-family: inherit;
+}
+
+.sidebar .write_board span {
+    display: inline-block;
+    position: relative;
+    padding-left: 25px;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.sidebar .write_board span::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 0;
+    background: url(../images/write_board.svg) 0 0 no-repeat;
+    width: 16px;
+    height: 16px;
+    margin-top: -8px;
+}
+
+.sidebar .adm_broadcast {
+    margin-top: 12px;
+    position: relative;
+}
+
+.sidebar .adm_broadcast1 {
+    background-color: #eef2f5;
+    margin: 16px 0 15px;
+    color: #333;
+    display: block;
+    position: relative;
+    width: 100%;
+    height: 44px;
+    border-radius: 4px;
+    border: 1px solid #e1e4e6;
+    line-height: 42px;
+    text-align: center;
+}
+
+.sidebar .adm_broadcast1 span {
+    padding-left: 22px;
+    display: inline-block;
+    position: relative;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.sidebar .adm_broadcast1 span::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 0;
+    background: url(../images/admin_broadcast.svg) 0 0 no-repeat;
+    width: 13px;
+    height: 13px;
+    margin-top: -7px;
+}
+
+.sidebar .side_menu {
+    position: relative;
+    z-index: 4;
+}
+
+.sidebar .menu_list {
+    margin-bottom: -1px;
+    padding: 20px 0;
+    border: 1px solid #e1e4e6;
+    border-width: 0 0 1px;
+    transition: all .2s ease;
+}
+
+.sidebar .menu_list h3 button {
+    display: block;
+    position: relative;
+    width: 100%;
+    height: 26px;
+    color: #000;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: left;
+    line-height: 26px;
+    transition: all .2s ease;
+    margin-bottom: 9px;
+}
+
+.sidebar .menu_list h3 button::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: 0;
+    background: url(../images/slide_down.svg) 0 0 no-repeat;
+    width: 10px;
+    height: 6px;
+    margin-top: -3px;
+    transition: all 0.2s;
+}
+
+.sidebar .menu_list ul {
+    position: static;
+    opacity: 1;
+    visibility: visible;
+    top: -9999em;
+    transition: all .1s ease;
+}
+
+.sidebar .menu_list ul li {
+    position: relative;
+}
+
+.sidebar .menu_list:first-child ul li:first-child {
+    background: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.sidebar .menu_list ul li:first-child {
+    background: url(../images/dot_lnb.png) 0 100% repeat-x;
+    margin-bottom: 8px;
+    padding-bottom: 8px;
+}
+
+.sidebar .menu_list ul li a {
+    display: block;
+    overflow: hidden;
+    padding: 6px 0 6px 8px;
+    border-radius: 3px;
+    text-overflow: ellipsis;
+    font-size: 13px;
+    word-break: break-all;
+    white-space: nowrap;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
