@@ -14,6 +14,10 @@ public interface UserDAO extends JpaRepository<User, Integer> {
 	Optional<User> findOneWithAuthoritiesByUserId(String userId);
 	
 	public Optional<User> findByUserId(String id);
+
+	Optional<User> findByUserPhone(String phone);
+	
+	Optional<User> findByUserEmail(String email);
 	
 	
 	

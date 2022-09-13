@@ -1,5 +1,6 @@
 package com.americatv.controller;
 
+import java.io.IOException;
 import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
@@ -17,6 +18,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.americatv.entity.BlackList;
@@ -49,39 +51,36 @@ public class UserController {
 	private final AuthenticationManagerBuilder authenticationManagerBuilder;
 
 	public UserController(TokenProvider tokenProvider, AuthenticationManagerBuilder authenticationManagerBuilder) {
-	        this.tokenProvider = tokenProvider;
-	        this.authenticationManagerBuilder = authenticationManagerBuilder;
-	    }
+		this.tokenProvider = tokenProvider;
+		this.authenticationManagerBuilder = authenticationManagerBuilder;
+	}
 
 	@PostMapping("/authenticate")
-    public ResponseEntity<TokenDto> authorize(@Valid @RequestBody LoginDto loginDto) {
+	public ResponseEntity<TokenDto> authorize(@Valid @RequestBody LoginDto loginDto) {
 		System.out.println(loginDto.getUserId());
 		System.out.println(loginDto.getUserPw());
-        UsernamePasswordAuthenticationToken authenticationToken =
-                new UsernamePasswordAuthenticationToken(loginDto.getUserId(), loginDto.getUserPw());
-        
-        System.out.println(authenticationToken);
-        Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+		UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
+				loginDto.getUserId(), loginDto.getUserPw());
 
-        String jwt = tokenProvider.createToken(authentication);
+		System.out.println(authenticationToken);
+		Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
+		SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add(JwtFilter.AUTHORIZATION_HEADER, "Bearer " + jwt);
+		String jwt = tokenProvider.createToken(authentication);
 
-        return new ResponseEntity<>(new TokenDto(jwt), httpHeaders, HttpStatus.OK);
-    }
-	
-	
+		HttpHeaders httpHeaders = new HttpHeaders();
+		httpHeaders.add(JwtFilter.AUTHORIZATION_HEADER, "Bearer " + jwt);
+
+		return new ResponseEntity<>(new TokenDto(jwt), httpHeaders, HttpStatus.OK);
+	}
+
 	@Autowired
 	public UserService userService;
 	public BookMarkService bookMarkService;
 
-	
-	
 	@Autowired
 	public BlackListService blacklistservice;
-	
+
 	@GetMapping("/")
 	public String index() {
 		return "안녕";
@@ -101,46 +100,78 @@ public class UserController {
 		return user.toString();
 	}
 
-	
 	@PostMapping("/signup")
-    public ResponseEntity<User> signup(
-            @Valid @RequestBody User userDto
-    ) {
-        return ResponseEntity.ok(userService.signup(userDto));
-    }
+	public ResponseEntity<User> signup(@Valid @RequestBody User userDto) {
+		return ResponseEntity.ok(userService.signup(userDto));
+	}
 
-    @GetMapping("/user")
-    @PreAuthorize("hasAnyRole('USER','ADMIN')")
-    public ResponseEntity<Optional<User>> getMyUserInfo(HttpServletRequest request) {
-        return ResponseEntity.ok(userService.getMyUserWithAuthorities());
-    }
+	// 유저 권한을 가진 사람이 본인 정보 가져올때 사용
+	@GetMapping("/user")
+	@PreAuthorize("hasAnyRole('USER','ADMIN')")
+	public ResponseEntity<Optional<User>> getMyUserInfo(HttpServletRequest request) {
+		return ResponseEntity.ok(userService.getMyUserWithAuthorities());
+	}
 
-    @GetMapping("/user/{username}")
-    @PreAuthorize("hasAnyRole('ADMIN')")
-    public ResponseEntity<Optional<User>> getUserInfo(@PathVariable String username) {
-        return ResponseEntity.ok(userService.getUserWithAuthorities(username));
-    }
-	
-	
-	
-//	@PostMapping("/signup")
-//	public ResponseEntity<String> signup(@RequestBody User userDto) {
-//		System.out.println(userDto);
-//		try {
-//			User user = userService.signup(userDto);
-//			if (user == null) {
-//
-//				return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
-//			}
-//
-//		} catch (Exception e) {
-//			System.out.println("회원 가입 오류");
-//			return new ResponseEntity<String>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-//		}
-//
-//		return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
-//
-//	}
+	// 어드민 권한을 가진 사람만 콜 할 수 있음
+	@GetMapping("/user/{username}")
+	@PreAuthorize("hasAnyRole('ADMIN')")
+	public ResponseEntity<Optional<User>> getUserInfo(@PathVariable String username) {
+		return ResponseEntity.ok(userService.getUserWithAuthorities(username));
+	}
+
+	// 아이디 중복 체크
+	@RequestMapping(value = "/pass/confirmId/{userId}", method = RequestMethod.GET)
+	public ResponseEntity<String> confirmUserId(@PathVariable String userId) throws IOException {
+		System.out.println(userService);
+		try {
+			Optional<User> user = userService.findByUserId(userId);
+
+			if (!user.isPresent()) {
+				return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
+			}
+
+			System.out.println("id중복 있음");
+			return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
+
+		} catch (Exception e) {
+			System.out.println("id중복 검사 오류");
+			return new ResponseEntity<String>(ERROR, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+
+	// 핸드폰번호 받아서 중복확인
+	@RequestMapping(value = "/pass/confirmPhone/{phone}", method = RequestMethod.GET)
+	public ResponseEntity<String> confirmUserPhone(@PathVariable String phone) throws IOException {
+
+		try {
+			Optional<User> user = userService.findUserPhone(phone);
+			if (!user.isPresent()) {
+				return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
+			}
+			System.out.println("핸드폰번호중복 있음");
+			return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
+		} catch (Exception e) {
+			System.out.println("핸드폰번호중복 검사 오류");
+			return new ResponseEntity<String>(ERROR, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+
+	// 이메일 받아서 중복확인
+	@RequestMapping(value = "/pass/confirmEmail/{email}", method = RequestMethod.GET)
+	public ResponseEntity<String> confirmUserEmail(@PathVariable String email) throws IOException {
+
+		try {
+			Optional<User> user = userService.findUserEmail(email);
+			if (!user.isPresent()) {
+				return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
+			}
+			System.out.println("이메일중복 있음");
+			return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
+		} catch (Exception e) {
+			System.out.println("이메일번호중복 검사 오류");
+			return new ResponseEntity<String>(ERROR, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
 
 	@PostMapping("/bookmark")
 	public String boookMark() {
