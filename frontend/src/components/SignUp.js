@@ -6,6 +6,8 @@ import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
 import { Link } from 'react-router-dom'
 import '../css/Signup.module.css';
+import axios from 'axios'
+
 
 function Join() {
 
@@ -85,8 +87,31 @@ function Join() {
     }
 
     const onSubmit = (e) => {
-        if (validation()) return;
+        if (validation()) return ;
 
+        axios.post('/ayj/signup', {
+            userId:"qwer",
+            userPw:"qwer",
+            userNick:"qwer",
+            userNm:"qwer",
+            userBirth:"1996-03-05",
+            userEmail:"qwer@naver.com",
+            userPhone:"010-7777-7197"
+        })
+        .then(res => {
+            if (!res.data) {
+            this.$fire({
+                text: "정보가 일치하지 않습니다",
+                type: "error",
+            })
+            }
+            else {
+                console.log(res);
+            }
+        })
+        .catch(err => {
+            console.error(err);
+        })
         // API Call
     }
 

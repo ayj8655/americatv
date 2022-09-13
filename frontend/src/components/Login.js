@@ -1,9 +1,33 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-
+import axios from 'axios'
 // import styles from '../css/Login.module.css';
 
-function Login(){
+function Login() {
+
+
+    const loginClicked = () => {
+
+        axios.post('/ayj/authenticate', {
+                userId: "admin",
+                userPw: "admin"
+            })
+            .then(res => {
+                if (!res.data) {
+                this.$fire({
+                    text: "정보가 일치하지 않습니다",
+                    type: "error",
+                })
+                }
+                else {
+                    console.log(res);
+                }
+            })
+            .catch(err => {
+                console.error(err);
+            })
+    };
+
     return (
     <body>
         <div className='main'>
@@ -15,7 +39,7 @@ function Login(){
            <input type='text' className='idtxt' placeholder='아이디'></input>
            <input type='text' className='pwtxt'placeholder='비밀번호'></input>
            <p className='login_btn'>
-            <button type='button' className='loginBtn'>로그인</button>
+            <button type='button' className='loginBtn' onClick={loginClicked}>로그인</button>
            </p>
         <div className='login_setting'>
            <input type='checkbox' className='cb-login-session'></input> 로그인 상태 유지
@@ -51,5 +75,8 @@ function Login(){
     </body>
     );
 }
+
+    
+
 
 export default Login;
