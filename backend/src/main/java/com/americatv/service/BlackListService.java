@@ -26,4 +26,15 @@ public class BlackListService {
 		
 	}
 
+	public BlackList black_user(BlackList BlackEntity) {
+		
+		BlackList black_user = BlackList.builder()
+				.userCd(BlackEntity.getUserCd())
+				.blackDt(BlackEntity.getBlackDt())
+				.blackUser(BlackEntity.getBlackUser())
+				.build();
+		
+		return blackListDAO.save(black_user);
+	}
+	
 }
