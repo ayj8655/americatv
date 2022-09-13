@@ -10,7 +10,7 @@ import Agreement from './components/Agreement';
 
 function App(){
   return(
-    <div className='Wrapper'>
+    
       <BrowserRouter>
           <Routes>
             <Route path='/main' element={<Main/>}></Route>
@@ -22,7 +22,7 @@ function App(){
           </Routes>      
       </BrowserRouter>
       
-    </div>
+   
   );
 }
 
