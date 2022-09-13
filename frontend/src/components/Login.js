@@ -1,26 +1,25 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import '../css/Login.css';
-import logo from'../images/logo192.png';
 
 function Login(){
     return (
     <body>
         <div className='main'>
-            <h2><Link to="/main">America TV</Link></h2>
+            <h2><Link to="/">America TV</Link></h2>
             <p className='info'>
                 로그인 후 이용하실수 있습니다.
             </p>
         <fieldset>   
-           <input type='text' placeholder='아이디'></input>
-           <input type='text' placeholder='비밀번호'></input>
+           <input type='text' className='idtxt' placeholder='아이디'></input>
+           <input type='text' className='pwtxt'placeholder='비밀번호'></input>
            <p className='login_btn'>
             <button type='button' className='loginBtn'>로그인</button>
            </p>
         <div className='login_setting'>
-           <input type='checkbox'></input> 로그인 상태 유지
+           <input type='checkbox' className='cb-login-session'></input> 로그인 상태 유지
            &nbsp;
-           <input type='checkbox'></input> 아이디 저장
+           <input type='checkbox' className='cb-id-save'></input> 아이디 저장
         </div>
 
         <div className='account_area'>

@@ -6,7 +6,7 @@ import './App.css';
 
 function App(){
   return(
-    <div className='Wrapper'>
+    
       <BrowserRouter>
           <Routes>
             <Route path='/' element={<Main/>}></Route>
@@ -14,7 +14,7 @@ function App(){
           </Routes>      
       </BrowserRouter>
       
-    </div>
+   
   );
 }
 
