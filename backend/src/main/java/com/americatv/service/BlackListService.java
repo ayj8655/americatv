@@ -8,12 +8,14 @@ import org.springframework.stereotype.Service;
 import com.americatv.dao.BlackListDAO;
 import com.americatv.entity.BlackList;
 
+import lombok.Builder;
+
+
 @Service
 public class BlackListService {
 	
 	@Autowired
 	BlackListDAO blackListDAO;
-	
 	
 	public Optional<BlackList> findByUserCd(int user_cd) {
 		Optional<BlackList> blacklist = blackListDAO.findByUserCd(user_cd);
