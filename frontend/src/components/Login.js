@@ -23,12 +23,17 @@ function Login() {
         default:
           break;
       }*/
-    
+    const[Id, setId] = React.useState("");
+    const[Pw, setPw] = React.useState("");
     const loginClicked = () => {
-
+        if(Id === ""){
+            alert("아이디를 입력하세요.");
+        }else if(Pw === ""){
+            alert("비밀번호를 입력하세요.");
+        }
         axios.post('/ayj/authenticate', {
-                userId: "admin",
-                userPw: "admin",
+                userId: Id,
+                userPw: Pw,
             })
             .then(res => {
                 if (!res.data) {
@@ -54,8 +59,8 @@ function Login() {
                 로그인 후 이용하실수 있습니다.
             </p>
         <fieldset className={styles.fieldset_wrap}>   
-           <input type='text' className={styles.idtxt} placeholder='아이디'></input>
-           <input type='password' className={styles.pwtxt} placeholder='비밀번호'></input>
+           <input type='text' className={styles.idtxt} placeholder='아이디' onChange={(e) => {setId(e.target.value);}}></input>
+           <input type='password' className={styles.pwtxt} placeholder='비밀번호'onChange={(e) => {setPw(e.target.value);}}></input>
            <p className={styles.login_btn}>
             <button type='button' className={styles.loginBtn} onClick={loginClicked}>로그인</button>
            </p>
