@@ -1,55 +1,46 @@
-import React, {useState} from 'react';
-import { Link } from 'react-router-dom';
-import axios from 'axios'
+import React from 'react';
+import { Link, Router, useNavigate } from 'react-router-dom';
+import axiosInstance from '../axiosConfig';
 import styles from '../css/Login.module.css';
 
 function Login() {
     //e.preventDefault();
-
-    /*switch (res.data.code) {
-        case 200:
-          console.log("로그인");
-          dispatch(loginUser(res.data.userInfo));
-          break;
-        case 400:
-          setMsg("ID, Password가 비어있습니다.");
-          break;
-        case 401:
-          setMsg("존재하지 않는 ID입니다.");
-          break;
-        case 402:
-          setMsg("Password가 틀립니다.");
-          break;
-        default:
-          break;
-      }*/
     const[Id, setId] = React.useState("");
     const[Pw, setPw] = React.useState("");
+    let navigate = useNavigate();
+
     const loginClicked = () => {
         if(Id === ""){
             alert("아이디를 입력하세요.");
         }else if(Pw === ""){
             alert("비밀번호를 입력하세요.");
-        }
-        axios.post('/ayj/authenticate', {
+        }else{
+        axiosInstance.post('/ayj/authenticate', {
                 userId: Id,
                 userPw: Pw,
             })
             .then(res => {
-                if (!res.data) {
-                this.$fire({
-                    text: "정보가 일치하지 않습니다",
-                    type: "error",
+                console.log('POST SUCCESS');
+                const token = res.data.token;
+                localStorage.setItem('access_token', token);
+                axiosInstance.get('/ayj/user') // http 통신이라고 보면된다 restapi
+                .then(res => {
+                    console.log('GET SUCCESS');
+                    console.log(res.data);
+                    localStorage.setItem('userId', res.data.userId)
+                    console.log(res.data.userId);
+                    alert(res.data.userId+'님 어서오세요');
+                    navigate('/'); 
                 })
-                }
-                else {
-                    console.log(res);
-                }
+                
             })
             .catch(err => {
                 console.error(err);
+                console.log('fail');
+                alert('로그인정보가 일치하지않습니다.');
             })
     };
+}
 
     return (
     <>
