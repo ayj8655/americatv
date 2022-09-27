@@ -1,9 +1,18 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import { Link } from 'react-router-dom';
 import styles from '../css/MyPage_Main.module.css';
 import MyPage_Template from '../components/MyPage_Template';
 
-function MyPage_Main(){
+const MyPage_Main = () => {
+
+    const [scrollPosition, setScrollPosition] = useState(0);
+    const updateScroll = () => {
+        setScrollPosition(window.scrollY || document.documentElement.scrollTop);
+    }
+    useEffect(()=>{
+        window.addEventListener('scroll', updateScroll);
+    });
+    
     return (
     <>
         <MyPage_Template/>
@@ -53,7 +62,7 @@ function MyPage_Main(){
                         </div>
                     </section>
                 </article>
-                <article className={styles.contents_main}>
+                <article className={scrollPosition < 160 ? styles.contents_main : styles.contents_main_down}>
                     <div>
                         <div>
                             <section className={styles.home}>
@@ -168,11 +177,66 @@ function MyPage_Main(){
                                         <div className={styles.board_list}>
                                             <ul>
                                                 <li className={styles.notice}>
-                                                    
+                                                    <a href='#'>
+                                                        <div className={styles.board_title}>
+                                                            <p>
+                                                                <span>
+                                                                    <i className={styles.class}>인기</i>
+                                                                    빠끄빠끄빠빠끄~
+                                                                </span>
+                                                            </p>
+                                                        </div>
+                                                    </a>
+                                                    <div className={styles.post_info}>
+                                                        2022-09-25
+                                                        <em>조회</em>
+                                                    </div>
                                                 </li>
-                                                <li></li>
-                                                <li></li>
-                                                <li></li>
+                                                <li>
+                                                    <a href='#'>
+                                                        <div className={styles.board_title}>
+                                                            <p>
+                                                                <span>
+                                                                    빠끄빠끄빠빠끄~
+                                                                </span>
+                                                            </p>
+                                                        </div>
+                                                    </a>
+                                                    <div className={styles.post_info}>
+                                                        2022-09-25
+                                                        <em>조회</em>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <a href='#'>
+                                                        <div className={styles.board_title}>
+                                                            <p>
+                                                                <span>
+                                                                    빠끄빠끄빠빠끄~
+                                                                </span>
+                                                            </p>
+                                                        </div>
+                                                    </a>
+                                                    <div className={styles.post_info}>
+                                                        2022-09-25
+                                                        <em>조회</em>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <a href='#'>
+                                                        <div className={styles.board_title}>
+                                                            <p>
+                                                                <span>
+                                                                    빠끄빠끄빠빠끄~
+                                                                </span>
+                                                            </p>
+                                                        </div>
+                                                    </a>
+                                                    <div className={styles.post_info}>
+                                                        2022-09-25
+                                                        <em>조회</em>
+                                                    </div>
+                                                </li>
                                             </ul>
                                         </div>
                                     </div>

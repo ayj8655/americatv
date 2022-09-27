@@ -2,7 +2,8 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import styles from '../css/MyPage_Template.module.css';
 
-function MyPage_Template(){
+const MyPage_Template = () => {
+
     return (
         <div>
             {/* Header */}
@@ -43,6 +44,14 @@ function MyPage_Template(){
                             <a href='#' className={styles.nickname}>
                                 개고수년<em></em>
                             </a>
+                            <div>
+                                <span></span>
+                                <div></div>
+                                <ul></ul>
+                                <ul></ul>
+                                <div></div>
+                                <div></div>
+                            </div>
                         </div>
                         
 
