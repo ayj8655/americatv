@@ -13,6 +13,7 @@ import ex5 from '../images/example5.jpg';
 import ex6 from '../images/example6.jpg';
 import profile from '../images/profile.jpg';
 
+
 function useInertval(callback, delay){
     const savedCallback = useRef();
     useEffect(() => {
@@ -34,7 +35,9 @@ function useInertval(callback, delay){
 
 
 
-function Main(){
+function Main(props){
+    const isLogin = props.isLogin;
+    console.log("Main islogin : " + isLogin);
     const TOTAL_SLIDES = 6;
     const [currentSlide, setCurrentSlide] = useState(0);
     const slideRef = useRef(null);
@@ -60,23 +63,13 @@ function Main(){
   };
 
   const StopSlider = () => {
-        const [currentSlide, setCurrentSlide] = useState(currentSlide);
-        
+    setCurrentSlide(0);
   }
+  
 
-  useEffect(() => {
-    slideRef.current.style.transition = 'all 0.3s ease-in-out';
-    slideRef.current.style.transform = `translateX(-${currentSlide*25.3}%)`; }, [currentSlide]);
-
-  useInertval(()=>{
-    setCurrentSlide(currentSlide => currentSlide +1);
-    if(currentSlide === 6){
-        setCurrentSlide(currentSlide => 0)
-    }
-  },3000)
     return(
         <>
-        <TemplateMain>
+        <TemplateMain isLogin={isLogin}>
         </TemplateMain>
         <section className={styles.list_container}>
             <div className={styles.mainBanners}>
@@ -577,7 +570,7 @@ function Main(){
                     <span>FAX : 02-123-4567</span>
                     <span>americaTV@americaTV.com (02-2022-0911)</span>
                 </div>
-                <p class="copyright">ⓒ AmericaTV Corp.</p>
+                <p className={styles.copyright}>ⓒ AmericaTV Corp.</p>
             </div>
         </div>
         </>

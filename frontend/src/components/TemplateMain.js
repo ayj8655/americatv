@@ -20,7 +20,11 @@ function TemplateMain(props){
                             <span>알림</span>
                         </button>
                     </div>
+<<<<<<< HEAD
                    {isLogin ? <p>{localStorage.getItem('userId')}</p> :
+=======
+                   {isLogin ? <p>{localStorage.getItem('userId')}님 어서오세요</p> :
+>>>>>>> 065486ffee3e3835672450cbe136442457c3d315
                    <Link to='login'>
                         <button type='button' className={styles.loginBtn}>
                         로그인

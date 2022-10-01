@@ -1,66 +1,80 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import axios from 'axios'
-// import styles from '../css/Login.module.css';
+import { Link, Router, useNavigate } from 'react-router-dom';
+import axiosInstance from '../axiosConfig';
+import styles from '../css/Login.module.css';
 
 function Login() {
-
+    //e.preventDefault();
+    const[Id, setId] = React.useState("");
+    const[Pw, setPw] = React.useState("");
+    let navigate = useNavigate();
 
     const loginClicked = () => {
-
-        axios.post('/ayj/authenticate', {
-                userId: "admin",
-                userPw: "admin"
+        if(Id === ""){
+            alert("아이디를 입력하세요.");
+        }else if(Pw === ""){
+            alert("비밀번호를 입력하세요.");
+        }else{
+        axiosInstance.post('/ayj/authenticate', {
+                userId: Id,
+                userPw: Pw,
             })
             .then(res => {
-                if (!res.data) {
-                this.$fire({
-                    text: "정보가 일치하지 않습니다",
-                    type: "error",
+                console.log('POST SUCCESS');
+                const token = res.data.token;
+                localStorage.setItem('access_token', token);
+                axiosInstance.get('/ayj/user') // http 통신이라고 보면된다 restapi
+                .then(res => {
+                    console.log('GET SUCCESS');
+                    console.log(res.data);
+                    localStorage.setItem('userId', res.data.userId)
+                    console.log(res.data.userId);
+                    alert(res.data.userId+'님 어서오세요');
+                    navigate('/'); 
                 })
-                }
-                else {
-                    console.log(res);
-                }
+                
             })
             .catch(err => {
                 console.error(err);
+                console.log('fail');
+                alert('로그인정보가 일치하지않습니다.');
             })
     };
+}
 
     return (
-    <body>
-        <div className='main'>
-            <h2><Link to="/">America TV</Link></h2>
-            <p className='info'>
+    <>
+        <div className={styles.main}>
+            <h2><Link to="/"></Link></h2>
+            <p className={styles.info}>
                 로그인 후 이용하실수 있습니다.
             </p>
-        <fieldset>   
-           <input type='text' className='idtxt' placeholder='아이디'></input>
-           <input type='text' className='pwtxt'placeholder='비밀번호'></input>
-           <p className='login_btn'>
-            <button type='button' className='loginBtn' onClick={loginClicked}>로그인</button>
+        <fieldset className={styles.fieldset_wrap}>   
+           <input type='text' className={styles.idtxt} placeholder='아이디' onChange={(e) => {setId(e.target.value);}}></input>
+           <input type='password' className={styles.pwtxt} placeholder='비밀번호'onChange={(e) => {setPw(e.target.value);}}></input>
+           <p className={styles.login_btn}>
+            <button type='button' className={styles.loginBtn} onClick={loginClicked}>로그인</button>
            </p>
-        <div className='login_setting'>
-           <input type='checkbox' className='cb-login-session'></input> 로그인 상태 유지
+        <div className={styles.login_setting}>
+           <input type='checkbox' className={styles.cb_login_session}></input> 로그인 상태 유지
            &nbsp;
-           <input type='checkbox' className='cb-id-save'></input> 아이디 저장
+           <input type='checkbox' className={styles.cb_id_save}></input> 아이디 저장
         </div>
 
-        <div className='account_area'>
-           <a href="#">아이디 찾기</a><sapn class='bar'>|</sapn>
-           <a href="#">비밀번호 찾기</a><sapn class='bar'>|</sapn>
+        <div className={styles.account_area}>
+           <a href="/">아이디 찾기</a><span className={styles.bar}>|</span>
+           <a href="/">비밀번호 찾기</a><span className={styles.bar}>|</span>
            <a href="Agreement">회원가입</a>
         </div>
 
-        <div className='signup_area'>
-           <a href="#" className='naver'><em></em>네이버로 로그인</a>
-           <a href="#" className='kakao'><em></em>카카오로 로그인</a>
-           <a href="#" className='apple'><em></em>Apple ID로 로그인</a>
+        <div className={styles.signup_area}>
+           <a href="/" className={styles.naver}><em></em>네이버로 로그인</a>
+           <a href="/" className={styles.kakao}><em></em>카카오로 로그인</a>
+           <a href="/" className={styles.apple}><em></em>Apple ID로 로그인</a>
         </div>
         </fieldset>
         </div>
-        <footer>
+        <footer className={styles.footer}>
             <ul>
                 <li>회사소개</li>
                 <li>서비스소개</li>
@@ -70,9 +84,9 @@ function Login() {
                 <li>고객센터</li>
                 <li>주요서비스</li>
             </ul>
-            <div class="copyright">ⓒ AmericaTV Corp.</div>
+            <div className={styles.copyright}>ⓒ AmericaTV Corp.</div>
         </footer>
-    </body>
+    </>
     );
 }
 
