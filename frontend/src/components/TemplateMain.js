@@ -3,7 +3,10 @@ import { Link } from 'react-router-dom';
 import styles from '../css/TemplateMain.module.css'; //styles 쓰면 전부 style로 해야하는듯
 
 
-function TemplateMain(){
+function TemplateMain(props){
+    const isLogin = props.isLogin;
+    console.log("TemplateMain : " + isLogin);
+
     return(
             <>
             <header className={styles.header}>
@@ -16,12 +19,14 @@ function TemplateMain(){
                         <button type='button' className={styles['btn-notice']}>
                             <span>알림</span>
                         </button>
-                    </div>            
-                    <Link to='login'>
+                    </div>
+                   {isLogin ? <p>{localStorage.getItem('userId')}</p> :
+                   <Link to='login'>
                         <button type='button' className={styles.loginBtn}>
                         로그인
                         </button>
-                    </Link>
+                    </Link> }
+                   
                     <button type='button' className={styles['btn-settings']}>
                         설정
                     </button>
