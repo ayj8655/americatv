@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import styles from '../css/TemplateMain.module.css'; //styles 쓰면 전부 style로 해야하는듯
+import AFprofile from '../images/AFprofile.gif';
 
 
 function TemplateMain(props){
@@ -20,16 +21,27 @@ function TemplateMain(props){
                             <span>알림</span>
                         </button>
                     </div>
-<<<<<<< HEAD
-                   {isLogin ? <p>{localStorage.getItem('userId')}</p> :
-=======
-                   {isLogin ? <p>{localStorage.getItem('userId')}님 어서오세요</p> :
->>>>>>> 065486ffee3e3835672450cbe136442457c3d315
+                   {isLogin ? 
+                   
+                   <div className={styles.profileWrap}>
+                    <div className={styles.userInfo}>
+                        <div className={styles.thumb}>
+                            <img src={AFprofile} alt='React'/>
+                        </div>
+                        <button type='button' className={styles.btn_login}>
+                            {localStorage.getItem('userNick')}
+                        </button>
+                    </div>
+                   </div>
+                   
+                   :
                    <Link to='login'>
                         <button type='button' className={styles.loginBtn}>
                         로그인
                         </button>
-                    </Link> }
+                    </Link>
+                    
+                    }
                    
                     <button type='button' className={styles['btn-settings']}>
                         설정

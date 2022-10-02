@@ -27,9 +27,10 @@ function Login() {
                 .then(res => {
                     console.log('GET SUCCESS');
                     console.log(res.data);
-                    localStorage.setItem('userId', res.data.userId)
-                    console.log(res.data.userId);
-                    alert(res.data.userId+'님 어서오세요');
+                    localStorage.setItem('userId', res.data.userId);
+                    localStorage.setItem('userNick', res.data.userNick);
+                    //console.log(res.data.userId);
+                    alert(res.data.userNick+'님 어서오세요');
                     navigate('/'); 
                 })
                 

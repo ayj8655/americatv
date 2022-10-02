@@ -8,7 +8,7 @@ import Agreement from './components/Agreement';
 import './App.css';
 
 function App(){
-  const [isLogin, setIsLogin] = useState(false);
+  let [isLogin, setIsLogin] = useState(false);
 
 useEffect(() => {
     if(localStorage.getItem('userId') === null){
