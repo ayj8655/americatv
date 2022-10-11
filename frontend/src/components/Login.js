@@ -1,13 +1,24 @@
 import React from 'react';
-import { Link, Router, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axiosInstance from '../axiosConfig';
 import styles from '../css/Login.module.css';
 
 function Login() {
     //e.preventDefault();
+    let navigate = useNavigate();
+    
+    if(localStorage.getItem('userId') != null){
+        navigate('/');
+    }
+
     const[Id, setId] = React.useState("");
     const[Pw, setPw] = React.useState("");
-    let navigate = useNavigate();
+    
+    const onCheckEnter = (e) =>{
+        if(e.key === 'Enter'){
+            loginClicked()
+        }
+    }
 
     const loginClicked = () => {
         if(Id === ""){
@@ -50,7 +61,7 @@ function Login() {
             <p className={styles.info}>
                 로그인 후 이용하실수 있습니다.
             </p>
-        <fieldset className={styles.fieldset_wrap}>   
+        <fieldset className={styles.fieldset_wrap} onKeyPress={onCheckEnter}>   
            <input type='text' className={styles.idtxt} placeholder='아이디' onChange={(e) => {setId(e.target.value);}}></input>
            <input type='password' className={styles.pwtxt} placeholder='비밀번호'onChange={(e) => {setPw(e.target.value);}}></input>
            <p className={styles.login_btn}>

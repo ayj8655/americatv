@@ -468,3 +468,133 @@ a{
 .userInfo .btn_login:hover{
     background-color: #f5f6f7;
 }
+
+.userArea{
+    display: block;
+    position: absolute;
+    top: 45px;
+    right: 0;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 8px 16px rgb(0 0 0 / 7%);
+    z-index: 3002;
+}
+
+.hide_userArea{
+    display: none;
+}
+
+.btnLogout{
+    overflow: hidden;
+    background-color: #f7f7f7;
+    width: 150px;
+    height: 30px;
+    display: table-cell;
+    vertical-align: middle;
+    text-align: center;
+    border-radius: 0 0 10px 10px;
+}
+
+.btnLogout .logout span{
+    font-family: 'Cafe24Oneprettynight';
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.btn_quick{
+    display: flex;
+    padding-top: 4px;
+}
+
+.btn_quick a{
+    display: block;
+    height: 55px;
+    color: #888;
+    font-size: 12px;
+    font-weight: 600;
+    text-align: center;
+    font-family: 'Cafe24Oneprettynight';
+}
+
+.btn_quick .myBroadcast{
+    background: url(../images/mybroadcast.svg) 50% 50% no-repeat;
+    position: relative;
+    background-position: 50% 8px;
+    background-size: 22px 22px;
+    width: 75px;
+}
+
+.btn_quick .myBroadcast::before{
+    content: "";
+    display: block;
+    height: 32px;
+}
+
+.btn_quick .myBroadcast::after{
+    content: "";
+    position: absolute;
+    top: 10px;
+    right: 0;
+    background: #ebecee;
+    width: 1px;
+    height: 33px;
+}
+
+.btn_quick .bookMark{
+    background: url(../images/Bookmark.svg) 50% 50% no-repeat;
+    position: relative;
+    background-position: 50% 8px;
+    background-size: 22px 22px;
+    width: 75px;
+}
+
+.btn_quick .bookMark::before{
+    content: "";
+    display: block;
+    height: 32px;
+}
+
+.userArea .menuList{
+    margin: 0;
+    padding: 10px 0 10px 16px;
+    border-top: 1px solid #ebebeb;
+}
+
+.userArea .menuList li{
+    display: flex;
+    align-items: center;
+    min-height: 26px;
+}
+
+.userArea .menuList li a{
+    display: flex;
+    align-items: center;
+    position: relative;
+    padding-left: 27px;
+    color: #555;
+}
+
+.userArea .menuList li a:hover{
+    font-weight: bold;
+}
+
+.menuList li a.my_info::before{
+    content: "";
+    position: absolute;
+    left: 0;
+    background: url(../images/my_info.svg) 50% 50% no-repeat;
+    background-size: 100% 100%;
+    width: 16px;
+    height: 16px;
+}
+
+.menuList li a.my_balloon::before{
+    content: "";
+    position: absolute;
+    left: 0;
+    background: url(../images/starballoon.svg) 50% 50% no-repeat;
+    background-size: 100% 100%;
+    width: 16px;
+    height: 16px;
+}
