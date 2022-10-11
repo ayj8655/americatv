@@ -5,6 +5,7 @@ import Login from './components/Login';
 import Main from './components/Main';
 import MyPage_Main from './components/MyPage_Main';
 import Agreement from './components/Agreement';
+import Slider from './components/exSlider'
 import './App.css';
 
 function App(){
@@ -29,6 +30,7 @@ useEffect(() => {
             <Route path='/agreement' element={<Agreement/>}></Route>
             <Route path='/signup' element={<Signup/>}></Route>
             <Route path='/MyPage_Main' element={<MyPage_Main/>}></Route>
+            <Route path='/Slider' element={<Slider/>}></Route>
           </Routes>      
       </BrowserRouter>
       

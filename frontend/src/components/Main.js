@@ -2,6 +2,7 @@ import React, {useEffect, useRef, useState} from 'react';
 import { Link } from 'react-router-dom';
 import styles from '../css/Main.module.css';
 import TemplateMain from './TemplateMain';
+//import Slider from './exSlider';
 import bnr1 from '../images/bnr1.png';
 import bnr2 from '../images/bnr2.png';
 import brn3 from '../images/bnr3.png';
@@ -14,62 +15,49 @@ import ex6 from '../images/example6.jpg';
 import profile from '../images/profile.jpg';
 
 
-function useInertval(callback, delay){
-    const savedCallback = useRef();
-    useEffect(() => {
-        savedCallback.current = callback;
-    }, [callback]);
-
-    useEffect(() => {
-        function tick() {
-            savedCallback.current();
-        }
-        if (delay !== null) {
-            let id = setInterval(tick, delay);
-            return () => clearInterval(id);
-        }
-    }, [delay]);
-
-}
 
 
+
+   
 
 
 function Main(props){
-    const isLogin = props.isLogin;
-    console.log("Main islogin : " + isLogin);
+    let [doLogin, setIsLogin] = useState(props.isLogin);
+    useEffect(() => {
+        if(localStorage.getItem('userId') === null){
+            console.log('Main not Login');
+            
+        }else{
+          setIsLogin(true);
+          //console.log('Main js Login!');
+        }
+    },[])
+
     const TOTAL_SLIDES = 6;
     const [currentSlide, setCurrentSlide] = useState(0);
     const slideRef = useRef(null);
-    //console.log(currentSlide);
 
-  // Next 버튼 클릭 시
-  const NextSlide = () => {
-    if (currentSlide >= TOTAL_SLIDES) {
-      // 더 이상 넘어갈 슬라이드가 없으면
-      setCurrentSlide(0); // 1번째 사진으로 넘어감
-      
-    } else {
-      setCurrentSlide(currentSlide + 1);
+    const NextSlide = () =>{
+        if(currentSlide >= TOTAL_SLIDES){
+            setCurrentSlide(0);
+        }
+        else{
+            setCurrentSlide(currentSlide + 1);
+        }
     }
-  };
-  // Prev 버튼 클릭 시
-  const PrevSlide = () => {
-    if (currentSlide === 0) {
-      setCurrentSlide(TOTAL_SLIDES); // 마지막 사진으로 
-    } else {
-      setCurrentSlide(currentSlide - 1);
-    }
-  };
 
-  const StopSlider = () => {
-    setCurrentSlide(0);
-  }
-  
+    const PrevSlide = () =>{
+        if(currentSlide === 0){
+            setCurrentSlide(TOTAL_SLIDES);
+        }else{
+            setCurrentSlide(currentSlide - 1);
+        }
+    }
+
 
     return(
         <>
-        <TemplateMain isLogin={isLogin}>
+        <TemplateMain isLogin={doLogin}>
         </TemplateMain>
         <section className={styles.list_container}>
             <div className={styles.mainBanners}>
@@ -137,7 +125,8 @@ function Main(props){
                 <div className={styles.hotIssueLive}>
                     <h2>실시간 핫이슈</h2>
                     <div className={styles.hotIssueLiveSwiper}>
-                        <ul className={styles.swiperWrapper} ref={slideRef} >
+                        
+                       <ul className={styles.swiperWrapper} ref={slideRef}>
                             <li className={styles.swiperSlide}>
                                 <div className={styles.thumbBox}>
                                     <Link to="#">
@@ -272,7 +261,7 @@ function Main(props){
                     </div>
                     <button type='button' className={styles.issuSliderArrowPrev} onClick={PrevSlide}></button>
                     <button type='button' className={styles.issuSliderArrowNext} onClick={NextSlide}></button>
-                    <button type='button' className={`${styles.moving} ${styles.stop}`} onClick={StopSlider} ></button>
+                    <button type='button' className={`${styles.moving} ${styles.stop}`} ></button>
                 </div>
 
                 <div className={styles.titleWrap}>
