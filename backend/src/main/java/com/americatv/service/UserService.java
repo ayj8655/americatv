@@ -98,4 +98,25 @@ public class UserService {
 		return user;
 	}
 
+	// 유저번호를 통해 회원정보를 수정할 때 사용
+	public boolean updateByUserId(User user) {
+
+		Optional<User> updateUser = userDAO.findByUserId(user.getUserId());
+
+		// update할 post가 없는 경우
+		if (!updateUser.isPresent()) 
+			return false;
+		
+		updateUser.ifPresent(selectUser -> {
+
+			selectUser.setUserPw((passwordEncoder.encode(user.getUserPw())));
+			selectUser.setUserEmail((user.getUserEmail()));
+			selectUser.setUserNick((user.getUserNick()));
+			userDAO.save(selectUser);
+
+		});
+
+		return true;
+	}
+
 }
