@@ -4,6 +4,8 @@ import Signup from './components/SignUp';
 import Login from './components/Login';
 import Main from './components/Main';
 import MyPage_Main from './components/MyPage_Main';
+import MyPage_InfoSetting from './components/MyPage_InfoSetting';
+import MyPage_Template from './components/MyPage_Template';
 import Agreement from './components/Agreement';
 import './App.css';
 
@@ -29,6 +31,8 @@ useEffect(() => {
             <Route path='/agreement' element={<Agreement/>}></Route>
             <Route path='/signup' element={<Signup/>}></Route>
             <Route path='/MyPage_Main' element={<MyPage_Main/>}></Route>
+            <Route path='/MyPage_Template' element={<MyPage_Template/>}></Route>
+            <Route path='/MyPage_InfoSetting' element={<MyPage_InfoSetting/>}></Route>
           </Routes>      
       </BrowserRouter>
       

@@ -1,5 +1,4 @@
 import React, {useState, useEffect} from 'react';
-import { Link } from 'react-router-dom';
 import styles from '../css/MyPage_Main.module.css';
 import MyPage_Template from '../components/MyPage_Template';
 
@@ -11,6 +10,7 @@ const MyPage_Main = () => {
     }
     useEffect(()=>{
         window.addEventListener('scroll', updateScroll);
+
     });
     
     return (
@@ -245,6 +245,9 @@ const MyPage_Main = () => {
                         </div>
                     </div>
                 </article>
+            </div>
+            <div className={styles.footer}>
+                ⓒ AmericaTV Corp.
             </div>
         </div>
         
