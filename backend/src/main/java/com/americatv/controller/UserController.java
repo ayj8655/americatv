@@ -34,6 +34,8 @@ import com.americatv.jwt.JwtFilter;
 import com.americatv.jwt.TokenProvider;
 import com.americatv.service.UserService;
 
+import io.swagger.annotations.ApiOperation;
+
 @RestController
 @RequestMapping(value = "/ayj")
 public class UserController {
@@ -51,6 +53,7 @@ public class UserController {
 	}
 
 	@PostMapping("/authenticate")
+	@ApiOperation(value = "로그인 및 인증", notes = "로그인 및 인증 토큰을 헤더 및 바디를 통해 반환", response = TokenDto.class)
 	public ResponseEntity<TokenDto> authorize(@Valid @RequestBody LoginDto loginDto) {
 		System.out.println(loginDto.getUserId());
 		System.out.println(loginDto.getUserPw());
@@ -103,8 +106,23 @@ public class UserController {
 	// 유저 권한을 가진 사람이 본인 정보 가져올때 사용
 	@GetMapping("/user")
 	@PreAuthorize("hasAnyRole('USER','ADMIN')")
-	public ResponseEntity<Optional<User>> getMyUserInfo(HttpServletRequest request) {
-		return ResponseEntity.ok(userService.getMyUserWithAuthorities());
+	@ApiOperation(value = "자기 자신의 회원정보 검색", notes = "토큰을 통해 자기 자신의 정보를 가져온다", response = User.class)
+	public ResponseEntity<User> getMyUserInfo(HttpServletRequest request) {
+		try {
+			Optional<User> user = userService.getMyUserWithAuthorities();
+
+			if (!user.isPresent()) {
+				return new ResponseEntity<User>(HttpStatus.NO_CONTENT);
+			}
+
+			System.out.println("회원정보 있음");
+			return new ResponseEntity<User>(user.get(), HttpStatus.OK);
+
+		} catch (Exception e) {
+			System.out.println("회원정보 검색 오류");
+			return new ResponseEntity<User>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+//		return ResponseEntity.ok(userService.getMyUserWithAuthorities());
 	}
 
 	// 어드민 권한을 가진 사람만 콜 할 수 있음
