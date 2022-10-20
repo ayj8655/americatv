@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.americatv.entity.Board;
 import com.americatv.entity.User;
 import com.americatv.dao.BoardDAO;
+import com.americatv.dao.UserDAO;
 
 @Service
 
@@ -25,14 +26,14 @@ public class BoardService {
                     .boardView(0)
                     .broadcastCd(1)
                     .cateCd(b.getCateCd())
-                    .userJoinDt(new Date())
+                    .boardDt(new Date())
                     .build();    // 제목 내용 유저아이디 가져옴
             
         return boardDAO.save(board);
     }
     
-    public Optional<Board> findByBoardCd(int board_cd) {    //게시글 호출
-        Optional<Board> board = boardDAO.findByBoardCd(board_cd);
+    public Optional<Board> read(int boardCd) {    //게시글 호출
+        Optional<Board> board = boardDAO.findByBoardCd(boardCd);
         board.ifPresent(seleteBoard -> {
             System.out.println(seleteBoard.getBoardCd()+"번 글 호출");
         });    
@@ -40,12 +41,24 @@ public class BoardService {
     }
     
     // 게시글 수정 -> signup방식으로 접근해야될거같은데 해당 컬럼 삭제하고 builder해서 넣는방법 물어봐야될듯
-    /*public Optional<Board> EditContent(int board_cd){
-        Optional<Board> board = boardDAO.findByBoardCd(board_cd);
+    public boolean updateBoard(Board board, int userCd){
         
-        return board;
+        if(board.getUserCd() != userCd)
+            return false;        
         
-    }*/
+        
+        Optional<Board> updateBoard = boardDAO.findByBoardCd(board.getBoardCd());
+        
+        updateBoard.ifPresent(selectBoard -> {
+            selectBoard.setBoardContent(board.getBoardContent());
+            selectBoard.setBoardTitle(board.getBoardTitle());
+            selectBoard.setCateCd(board.getCateCd());
+            boardDAO.save(selectBoard);
+        });
+        return true;
+        
+    }
+    
         
 //      public BoardVO read(int bno) throws Exception;  //게시글 상세보기
 //      public void update(Board b) throws Exception;   //게시글 수정

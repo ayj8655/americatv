@@ -57,7 +57,7 @@ public class Board {
 
 	@Column(name = "BOARD_DT")
 	@Temporal(TemporalType.TIMESTAMP) // 이거 써야 자동으로 시간 넣어줌
-	private Date userJoinDt;
+	private Date boardDt;
 
 	@Column(name = "BOARD_RECOMMEND")
 	private Integer boardRecommend;
