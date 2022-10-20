@@ -2,6 +2,7 @@ import React, {useEffect, useRef, useState} from 'react';
 import { Link } from 'react-router-dom';
 import styles from '../css/Main.module.css';
 import TemplateMain from './TemplateMain';
+//import Slider from './exSlider';
 import bnr1 from '../images/bnr1.png';
 import bnr2 from '../images/bnr2.png';
 import brn3 from '../images/bnr3.png';
@@ -13,70 +14,50 @@ import ex5 from '../images/example5.jpg';
 import ex6 from '../images/example6.jpg';
 import profile from '../images/profile.jpg';
 
-function useInertval(callback, delay){
-    const savedCallback = useRef();
+
+
+
+
+   
+
+
+function Main(props){
+    let [doLogin, setIsLogin] = useState(props.isLogin);
     useEffect(() => {
-        savedCallback.current = callback;
-    }, [callback]);
-
-    useEffect(() => {
-        function tick() {
-            savedCallback.current();
+        if(localStorage.getItem('userId') === null){
+            console.log('Main not Login');
+            
+        }else{
+          setIsLogin(true);
+          //console.log('Main js Login!');
         }
-        if (delay !== null) {
-            let id = setInterval(tick, delay);
-            return () => clearInterval(id);
-        }
-    }, [delay]);
+    },[])
 
-}
-
-
-
-
-function Main(){
     const TOTAL_SLIDES = 6;
     const [currentSlide, setCurrentSlide] = useState(0);
     const slideRef = useRef(null);
-    //console.log(currentSlide);
 
-  // Next 버튼 클릭 시
-  const NextSlide = () => {
-    if (currentSlide >= TOTAL_SLIDES) {
-      // 더 이상 넘어갈 슬라이드가 없으면
-      setCurrentSlide(0); // 1번째 사진으로 넘어감
-      
-    } else {
-      setCurrentSlide(currentSlide + 1);
+    const NextSlide = () =>{
+        if(currentSlide >= TOTAL_SLIDES){
+            setCurrentSlide(0);
+        }
+        else{
+            setCurrentSlide(currentSlide + 1);
+        }
     }
-  };
-  // Prev 버튼 클릭 시
-  const PrevSlide = () => {
-    if (currentSlide === 0) {
-      setCurrentSlide(TOTAL_SLIDES); // 마지막 사진으로 
-    } else {
-      setCurrentSlide(currentSlide - 1);
+
+    const PrevSlide = () =>{
+        if(currentSlide === 0){
+            setCurrentSlide(TOTAL_SLIDES);
+        }else{
+            setCurrentSlide(currentSlide - 1);
+        }
     }
-  };
 
-  const StopSlider = () => {
-        const [currentSlide, setCurrentSlide] = useState(currentSlide);
-        
-  }
 
-  useEffect(() => {
-    slideRef.current.style.transition = 'all 0.3s ease-in-out';
-    slideRef.current.style.transform = `translateX(-${currentSlide*25.3}%)`; }, [currentSlide]);
-
-  useInertval(()=>{
-    setCurrentSlide(currentSlide => currentSlide +1);
-    if(currentSlide === 6){
-        setCurrentSlide(currentSlide => 0)
-    }
-  },3000)
     return(
         <>
-        <TemplateMain>
+        <TemplateMain isLogin={doLogin}>
         </TemplateMain>
         <section className={styles.list_container}>
             <div className={styles.mainBanners}>
@@ -144,7 +125,8 @@ function Main(){
                 <div className={styles.hotIssueLive}>
                     <h2>실시간 핫이슈</h2>
                     <div className={styles.hotIssueLiveSwiper}>
-                        <ul className={styles.swiperWrapper} ref={slideRef} >
+                        
+                       <ul className={styles.swiperWrapper} ref={slideRef}>
                             <li className={styles.swiperSlide}>
                                 <div className={styles.thumbBox}>
                                     <Link to="#">
@@ -279,7 +261,7 @@ function Main(){
                     </div>
                     <button type='button' className={styles.issuSliderArrowPrev} onClick={PrevSlide}></button>
                     <button type='button' className={styles.issuSliderArrowNext} onClick={NextSlide}></button>
-                    <button type='button' className={`${styles.moving} ${styles.stop}`} onClick={StopSlider} ></button>
+                    <button type='button' className={`${styles.moving} ${styles.stop}`} ></button>
                 </div>
 
                 <div className={styles.titleWrap}>
@@ -577,7 +559,7 @@ function Main(){
                     <span>FAX : 02-123-4567</span>
                     <span>americaTV@americaTV.com (02-2022-0911)</span>
                 </div>
-                <p class="copyright">ⓒ AmericaTV Corp.</p>
+                <p className={styles.copyright}>ⓒ AmericaTV Corp.</p>
             </div>
         </div>
         </>

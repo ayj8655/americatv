@@ -45,9 +45,15 @@ public class SecurityConfig{
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
-        return (web) -> web.ignoring().antMatchers("/h2-console/**"
-                , "/favicon.ico"
-                , "/error");
+        return (web) -> web.ignoring().antMatchers(
+        		"/h2-console/**",
+                "/favicon.ico",
+                "/v2/**", // swagger
+	            "/webjars/**", // swagger
+	            "/swagger**", // swagger
+	            "/swagger-ui/**",
+	            "/swagger-resources/**", // swagger
+                "/error");
     }
 
     @Bean
@@ -79,6 +85,7 @@ public class SecurityConfig{
                 .antMatchers("/ayj/authenticate").permitAll()
                 .antMatchers("/ayj/signup").permitAll()
                 .antMatchers("/ayj/pass/**").permitAll()
+                .antMatchers("/broadcast/**").permitAll()
 
                 .anyRequest().authenticated()
 

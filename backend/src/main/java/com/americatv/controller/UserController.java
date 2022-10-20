@@ -21,23 +21,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.americatv.entity.BlackList;
 import com.americatv.entity.User;
 import com.americatv.service.BlackListService;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 import com.americatv.dto.LoginDto;
 import com.americatv.dto.TokenDto;
 import com.americatv.entity.BookMark;
 import com.americatv.service.BookMarkService;
-import com.americatv.entity.User;
 import com.americatv.jwt.JwtFilter;
 import com.americatv.jwt.TokenProvider;
 import com.americatv.service.UserService;
+
+import io.swagger.annotations.ApiOperation;
 
 @RestController
 @RequestMapping(value = "/ayj")
@@ -56,6 +53,7 @@ public class UserController {
 	}
 
 	@PostMapping("/authenticate")
+	@ApiOperation(value = "로그인 및 인증", notes = "로그인 및 인증 토큰을 헤더 및 바디를 통해 반환", response = TokenDto.class)
 	public ResponseEntity<TokenDto> authorize(@Valid @RequestBody LoginDto loginDto) {
 		System.out.println(loginDto.getUserId());
 		System.out.println(loginDto.getUserPw());
@@ -108,8 +106,23 @@ public class UserController {
 	// 유저 권한을 가진 사람이 본인 정보 가져올때 사용
 	@GetMapping("/user")
 	@PreAuthorize("hasAnyRole('USER','ADMIN')")
-	public ResponseEntity<Optional<User>> getMyUserInfo(HttpServletRequest request) {
-		return ResponseEntity.ok(userService.getMyUserWithAuthorities());
+	@ApiOperation(value = "자기 자신의 회원정보 검색", notes = "토큰을 통해 자기 자신의 정보를 가져온다", response = User.class)
+	public ResponseEntity<User> getMyUserInfo(HttpServletRequest request) {
+		try {
+			Optional<User> user = userService.getMyUserWithAuthorities();
+
+			if (!user.isPresent()) {
+				return new ResponseEntity<User>(HttpStatus.NO_CONTENT);
+			}
+
+			System.out.println("회원정보 있음");
+			return new ResponseEntity<User>(user.get(), HttpStatus.OK);
+
+		} catch (Exception e) {
+			System.out.println("회원정보 검색 오류");
+			return new ResponseEntity<User>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+//		return ResponseEntity.ok(userService.getMyUserWithAuthorities());
 	}
 
 	// 어드민 권한을 가진 사람만 콜 할 수 있음
@@ -172,6 +185,25 @@ public class UserController {
 			return new ResponseEntity<String>(ERROR, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
+	
+	@RequestMapping(value = "/", method = RequestMethod.PUT)
+	@PreAuthorize("hasAnyRole('USER','ADMIN')")
+		public ResponseEntity<String> updateUser(@RequestBody User user) throws IOException {
+		try {
+			boolean ret = userService.updateByUserId(user);
+			if (!ret) {
+				return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
+			}
+
+			System.out.println("회원 수정 성공");
+			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
+		} catch (Exception e) {
+			System.out.println("회원 수정 에러");
+			e.printStackTrace();
+			return new ResponseEntity<String>(ERROR, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
 
 	@PostMapping("/bookmark")
 	public String boookMark() {

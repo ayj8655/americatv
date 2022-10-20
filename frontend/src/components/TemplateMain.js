@@ -1,9 +1,26 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import styles from '../css/TemplateMain.module.css'; //styles 쓰면 전부 style로 해야하는듯
+import AFprofile from '../images/AFprofile.gif';
 
 
-function TemplateMain(){
+function TemplateMain(props){
+    const isLogin = props.isLogin;
+    let navigate = useNavigate();
+    const [isOpen , setToggle] = useState(false);
+
+    const logoutMenu = () =>{
+        setToggle(isOpen => !isOpen); // on, off 개념
+    }
+
+    const onLogout = () =>{
+        localStorage.removeItem('userId');
+
+        navigate('/');
+
+    }
+    //console.log("TemplateMain : " + isLogin);
+
     return(
             <>
             <header className={styles.header}>
@@ -16,15 +33,59 @@ function TemplateMain(){
                         <button type='button' className={styles['btn-notice']}>
                             <span>알림</span>
                         </button>
-                    </div>            
-                    <Link to='login'>
+                    </div>
+                   {isLogin ? 
+                   
+                   <div className={styles.profileWrap}>
+                    <div className={styles.userInfo}>
+                        <div className={styles.thumb}>
+                            <img src={AFprofile} alt='React'/>
+                        </div>
+                        <button type='button' className={styles.btn_login} onClick={() => logoutMenu()}>
+                            {localStorage.getItem('userNick')}
+                        </button>
+                    </div>
+                    <div className={isOpen ? styles.userArea : styles.hide_userArea}>
+                        <div className={styles.btn_quick}>
+                            <Link to="/MyPage_Main" target="_top" className={styles.myBroadcast}>
+                                방송국
+                            </Link>
+                            <Link to="/" target="_top" className={styles.bookMark}>
+                                즐겨찾기
+                            </Link>
+                        </div>
+                        <ul className={styles.menuList}>
+                            <li>
+                               <Link to='/' className={styles.my_info}>
+                                    <span>내 정보</span>
+                                </Link> 
+                            </li>
+                            <li>
+                               <Link to='/' className={styles.my_balloon}>
+                                    <span>내 별풍선</span>
+                                </Link> 
+                            </li>
+                        </ul>
+                        <div className={styles.btnLogout}>
+                            <a href='/' className={styles.logout} onClick={onLogout}>
+                                <span>로그아웃</span>
+                            </a>
+                        </div>
+                    </div>
+                   </div>
+                   
+                   :
+                   <Link to='login'>
                         <button type='button' className={styles.loginBtn}>
                         로그인
                         </button>
                     </Link>
-                    <button type='button' className={styles['btn-settings']}>
+                    
+                    }
+                   
+                    {isLogin ? "" : <button type='button' className={styles['btn-settings']}>
                         설정
-                    </button>
+                    </button>}
                     <div className={styles.serviceMenu}>
                         <button type='button' className={styles['btn-allMenu']}>
                             모든메뉴

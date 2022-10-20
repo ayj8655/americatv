@@ -9,13 +9,15 @@ import org.springframework.transaction.annotation.Transactional;
 import com.americatv.dao.BlackListDAO;
 import com.americatv.entity.BlackList;
 
+import lombok.Builder;
+
+
 @Service
 public class BlackListService {
 	
 	@Autowired
 	BlackListDAO blackListDAO;
 	
-
    public BlackList black_user(BlackList BlackEntity) {
         
         BlackList black_user = BlackList.builder()
@@ -26,12 +28,11 @@ public class BlackListService {
         
         return blackListDAO.save(black_user);
     }
-		
-	
+
 	public Optional<BlackList> findByUserCd(int user_cd) {
 		Optional<BlackList> blacklist = blackListDAO.findByUserCd(user_cd);
 		
-		blacklist.ifPresent(seleteBlackList -> {
+		blacklist.ifPresent(seleteBlackList -> {  //값이 있는지 없는지 판단한다.
 			System.out.println(seleteBlackList.getBlackDt());
 		});
 		

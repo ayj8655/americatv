@@ -172,6 +172,36 @@ a, textarea {
     text-indent: -9999px;
 }
 
+.header .userArea {
+    position: absolute;
+    top: 39px;
+    right: 0;
+    background: #fff;
+    width: 170px;
+    border: 1px solid #bfbfbf;
+    border-radius: 4px;
+    z-index: 20;
+    animation: left_AC 0.4s ease forwards;
+    -webkit-animation: left_AC 0.4s ease forwards;
+}
+
+.header .show-menu {
+    position: absolute;
+    top: 39px;
+    right: 0;
+    background: #fff;
+    width: 170px;
+    border: 1px solid #bfbfbf;
+    border-radius: 4px;
+    z-index: 20;
+    animation: left_AC 0.4s ease forwards;
+    -webkit-animation: left_AC 0.4s ease forwards;
+}
+
+.header .hide-menu {
+    
+}
+
 
 
 
