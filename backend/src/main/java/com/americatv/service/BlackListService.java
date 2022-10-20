@@ -20,7 +20,7 @@ public class BlackListService {
 	public Optional<BlackList> findByUserCd(int user_cd) {
 		Optional<BlackList> blacklist = blackListDAO.findByUserCd(user_cd);
 		
-		blacklist.ifPresent(seleteBlackList -> {
+		blacklist.ifPresent(seleteBlackList -> {  //값이 있는지 없는지 판단한다.
 			System.out.println(seleteBlackList.getBlackDt());
 		});
 		
