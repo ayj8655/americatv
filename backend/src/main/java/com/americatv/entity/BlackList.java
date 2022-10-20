@@ -41,9 +41,12 @@ public class BlackList {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY) // 이건 오토인크리먼트일때만 넣어주는거
+	
+	// 블랙 순서
 	@Column(name = "BLACK_CD")
 	private Integer blackCd;
 	
+	// 블랙한 BJ 코드
 	@Column(name = "USER_CD")
 	private Integer userCd;
 
@@ -51,6 +54,7 @@ public class BlackList {
 	@Temporal(TemporalType.TIMESTAMP) // 이거 써야 자동으로 시간 넣어줌
 	private Date blackDt;
 
+	// 블랙당한 유저
 	@Column(name = "BLACK_USER")
 	private String blackUser;
 	

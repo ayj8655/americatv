@@ -22,7 +22,8 @@ import com.americatv.service.UserService;
 @RequestMapping(value = "/broadcast")
 public class BroadcastController {
 	
-	@Autowired
+	
+    @Autowired
 	public BlackListService blackListService;
 	
 	@Autowired
@@ -36,15 +37,24 @@ public class BroadcastController {
 		return "방송 컨트롤러";
 	}
 	
-	@PostMapping("/blackList")
-	public String ayj() {
+	// @GetMapping에 value의 {안에있는}이 부분이랑  @PathVariable 부분의 뒤에 int 다음에 오는 것은 같아야함 
+	@GetMapping(value = "/blackList/{user_cd}")
+	public ResponseEntity<Optional<BlackList>> getbjuser(@PathVariable int user_cd) {
+	    
 		System.out.println(blackListService);
 		
-		Optional<BlackList> blackList = blackListService.findByUserCd(1);
+		Optional<BlackList> blackList = blackListService.findByUserCd(user_cd);
 		System.out.println(blackList);
-		return blackList.toString();
+		return ResponseEntity.ok(blackListService.getUblacklist(user_cd));
 	}
 	
+//	@PostMapping(value = "/blackList")
+//	public ResponseEntity<Optional<BlackList>> postuser(@PathVariable String black_user){
+//	    System.out.println(blackListService);
+//	    
+//	    return ResponseEntity.ok(blackListService.postblacklist(black_user));
+//	    
+//	}
 	
 	
 	@GetMapping("/{userId}")
