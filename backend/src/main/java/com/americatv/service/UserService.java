@@ -104,9 +104,9 @@ public class UserService {
 		Optional<User> updateUser = userDAO.findByUserId(user.getUserId());
 
 		// update할 post가 없는 경우
-		if (!updateUser.isPresent()) 
+		if (!updateUser.isPresent())
 			return false;
-		
+
 		updateUser.ifPresent(selectUser -> {
 
 			selectUser.setUserPw((passwordEncoder.encode(user.getUserPw())));
@@ -116,6 +116,17 @@ public class UserService {
 
 		});
 
+		return true;
+	}
+
+	public boolean DeleteFromUserId(String userId) {
+		Optional<User> updateUser = userDAO.findByUserId(userId);
+		// 탈퇴할 유저가 없는 경우
+		if (!updateUser.isPresent())
+			return false;
+		
+		userDAO.deleteByUserId(userId);
+		
 		return true;
 	}
 
