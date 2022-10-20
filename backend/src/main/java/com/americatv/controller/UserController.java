@@ -34,6 +34,8 @@ import com.americatv.jwt.JwtFilter;
 import com.americatv.jwt.TokenProvider;
 import com.americatv.service.UserService;
 
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 
 @RestController
@@ -52,6 +54,26 @@ public class UserController {
 		this.authenticationManagerBuilder = authenticationManagerBuilder;
 	}
 
+	@Autowired
+	public UserService userService;
+	public BookMarkService bookMarkService;
+
+	@Autowired
+	public BlackListService blacklistservice;
+
+
+	@GetMapping("/hello")
+	@ApiOperation(value = "API 테스트용", notes = "Hello 반환하면 정상")
+	public ResponseEntity<String> hello() {
+		return ResponseEntity.ok("hello");
+	}
+
+	@PostMapping("/signup")
+	@ApiOperation(value = "회원가입", notes = "아이디,비밀번호,생년월일,이메일,닉네임,이름,핸드폰번호 입력시 회원가입", response = User.class)
+	public ResponseEntity<User> signup(@Valid @RequestBody User userDto) {
+		return ResponseEntity.ok(userService.signup(userDto));
+	}
+	
 	@PostMapping("/authenticate")
 	@ApiOperation(value = "로그인 및 인증", notes = "로그인 및 인증 토큰을 헤더 및 바디를 통해 반환", response = TokenDto.class)
 	public ResponseEntity<TokenDto> authorize(@Valid @RequestBody LoginDto loginDto) {
@@ -71,37 +93,32 @@ public class UserController {
 
 		return new ResponseEntity<>(new TokenDto(jwt), httpHeaders, HttpStatus.OK);
 	}
+	
+	@RequestMapping(value = "/{userId}", method = RequestMethod.DELETE)
+	@PreAuthorize("hasAnyRole('USER','ADMIN')")
+	@ApiOperation(value = "유저아이디로 회원 탈퇴", notes = "유저아이디를 받아 해당 유저 탈퇴", response = String.class)
+	@ApiImplicitParams({ @ApiImplicitParam(name = "userId", value = "탈퇴하고싶은 userId", required = true) })
+	public ResponseEntity<String> withdraw(@PathVariable String userId) throws IOException {
 
-	@Autowired
-	public UserService userService;
-	public BookMarkService bookMarkService;
+		try {
+			System.out.println(userService);
+			boolean ret = userService.DeleteFromUserId(userId);
 
-	@Autowired
-	public BlackListService blacklistservice;
+			if (!ret) {
+				return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
+			}
 
-	@GetMapping("/")
-	public String index() {
-		return "안녕";
+			System.out.println("회원 탈퇴 성공");
+			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("회원 탈퇴 오류");
+			return new ResponseEntity<String>(ERROR, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
-
-	@GetMapping("/hello")
-	public ResponseEntity<String> hello() {
-		return ResponseEntity.ok("hello");
-	}
-
-	@GetMapping("/user1111")
-	public String ayj() {
-		System.out.println(userService);
-
-		Optional<User> user = userService.findeByUserId("ayj");
-		System.out.println(user);
-		return user.toString();
-	}
-
-	@PostMapping("/signup")
-	public ResponseEntity<User> signup(@Valid @RequestBody User userDto) {
-		return ResponseEntity.ok(userService.signup(userDto));
-	}
+	
+	
+	
 
 	// 유저 권한을 가진 사람이 본인 정보 가져올때 사용
 	@GetMapping("/user")
@@ -128,12 +145,14 @@ public class UserController {
 	// 어드민 권한을 가진 사람만 콜 할 수 있음
 	@GetMapping("/user/{username}")
 	@PreAuthorize("hasAnyRole('ADMIN')")
+	@ApiOperation(value = "타인의 회원정보 검색 (어드민 권한 전용)", notes = "타인의 아이디를 입력하면 유저 정보 리턴", response = User.class)
 	public ResponseEntity<Optional<User>> getUserInfo(@PathVariable String username) {
 		return ResponseEntity.ok(userService.getUserWithAuthorities(username));
 	}
 
 	// 아이디 중복 체크
 	@RequestMapping(value = "/pass/confirmId/{userId}", method = RequestMethod.GET)
+	@ApiOperation(value = "아이디 중복 체크", notes = "아이디를 입력하면 중복 여부를 체크한다. 중복이 없을시 200, 중복이라면 204, 서버 오류는 500")
 	public ResponseEntity<String> confirmUserId(@PathVariable String userId) throws IOException {
 		System.out.println(userService);
 		try {
@@ -154,6 +173,7 @@ public class UserController {
 
 	// 핸드폰번호 받아서 중복확인
 	@RequestMapping(value = "/pass/confirmPhone/{phone}", method = RequestMethod.GET)
+	@ApiOperation(value = "핸드폰 번호 중복 체크", notes = "핸드폰 번호를 입력하면 중복 여부를 체크한다. 중복이 없을시 200, 중복이라면 204, 서버 오류는 500")
 	public ResponseEntity<String> confirmUserPhone(@PathVariable String phone) throws IOException {
 
 		try {
@@ -171,6 +191,7 @@ public class UserController {
 
 	// 이메일 받아서 중복확인
 	@RequestMapping(value = "/pass/confirmEmail/{email}", method = RequestMethod.GET)
+	@ApiOperation(value = "이메일 중복 체크", notes = "이메일을 입력하면 중복 여부를 체크한다. 중복이 없을시 200, 중복이라면 204, 서버 오류는 500")
 	public ResponseEntity<String> confirmUserEmail(@PathVariable String email) throws IOException {
 
 		try {
@@ -188,6 +209,7 @@ public class UserController {
 	
 	@RequestMapping(value = "/", method = RequestMethod.PUT)
 	@PreAuthorize("hasAnyRole('USER','ADMIN')")
+	@ApiOperation(value = "회원 정보 수정", notes = "수정 가능한 정보는 비밀번호, 이메일, 닉네임 3개만 가능, 성공시 200, 에러 or 실패시 204,500")
 		public ResponseEntity<String> updateUser(@RequestBody User user) throws IOException {
 		try {
 			boolean ret = userService.updateByUserId(user);
@@ -204,13 +226,4 @@ public class UserController {
 		}
 	}
 	
-
-	@PostMapping("/bookmark")
-	public String boookMark() {
-
-		Optional<BookMark> bookmark = bookMarkService.findByUserCd(2);
-		System.out.println(bookmark);
-		return bookmark.toString();
-	}
-
 }
