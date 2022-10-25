@@ -22,6 +22,8 @@ import com.americatv.entity.User;
 import com.americatv.service.BoardService;
 import com.americatv.service.UserService;
 
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 
 import com.americatv.entity.*;
@@ -60,7 +62,7 @@ public class BoardController {
         return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 
     }
-    @GetMapping("/read/{boardcd}")
+    @GetMapping("/read/{boardCd}")
     @ApiOperation(value = "게시글 조회", notes = "작성된 게시글을 클릭하여 조회할 게시물 내용을 가져온다.", response = Board.class)
     public ResponseEntity<Optional<Board>> getBoardInfo(@PathVariable int boardCd) {
         System.out.println(boardService);
@@ -81,10 +83,10 @@ public class BoardController {
      */
     
     @RequestMapping(value ="/", method=RequestMethod.PUT)
-    @ApiOperation(value = "게시글 수정", notes = "작성자인지 확인후 게시물 내용을 수정한다.", response = Board.class)
-    public ResponseEntity<String> updateBoard(@RequestBody Board board, int userCd) throws IOException {
+    @ApiOperation(value = "게시글 수정", notes = "게시글의 제목 내용 카테고리 수정 가능, 성공 200, 에러 or 실패시 204,500", response = Board.class)
+    public ResponseEntity<String> updateBoard(@RequestBody Board board) throws IOException {
         try {
-            boolean ret = boardService.updateBoard(board, userCd);
+            boolean ret = boardService.updateBoard(board);
             if (!ret) {
                 return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
             }
@@ -97,6 +99,23 @@ public class BoardController {
         }
     }
     
-   
+   @RequestMapping(value="/{boardCd}", method = RequestMethod.DELETE)
+   @ApiOperation(value="보드코드로 게시물 삭제", notes = "보드코드를 받아 게시물을 삭제한다.", response = String.class)
+   @ApiImplicitParams({ @ApiImplicitParam(name = "boardCd", value = "삭제하고싶은 boardCd", required = true) })
+   public ResponseEntity<String> deleteBoard(@PathVariable int boardCd) throws IOException{
+       
+       try {
+           boolean ret = boardService.deleteBoard(boardCd);
+           if(!ret) {
+               return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
+           }
+           System.out.println("게시물 삭제 성공");
+           return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
+       } catch (Exception e) {
+           e.printStackTrace();
+           System.out.println("게시글 삭제 오류");
+           return new ResponseEntity<String>(ERROR, HttpStatus.INTERNAL_SERVER_ERROR);
+       }
+   }
 
 }
