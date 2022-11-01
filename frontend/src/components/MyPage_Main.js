@@ -1,25 +1,34 @@
 import React, {useState, useEffect} from 'react';
-import {useHistory, useParams} from 'react-router-dom';
-import { Link } from 'react-router-dom';
+
+import {Link, useHistory, useParams, useLocation, useNavigate} from 'react-router-dom';
 import styles from '../css/MyPage_Main.module.css';
 import MyPage_Template from '../components/MyPage_Template';
-import axiosInstance from '../axiosConfig';
+import axiosInstance from '../axiosConfig.js'
+
 
 const MyPage_Main = () => {
 
     const {userid} = useParams();
-    
+
+    const location = useLocation();
+    const navigate = useNavigate();
+
     const [scrollPosition, setScrollPosition] = useState(0);
     const updateScroll = () => {
         setScrollPosition(window.scrollY || document.documentElement.scrollTop);
     }
+    
     useEffect(()=>{
         window.addEventListener('scroll', updateScroll);
         console.log(userid);
+
             
         axiosInstance.get('/broadcast/' + `${userid}`)
         .then(res => {
             console.log(res.data);
+            localStorage.setItem("broadcastMyMessage", res.data.broadcastMyMessage);
+            localStorage.setItem("broadcastNm", res.data.broadcastNm);
+            navigate(location);
         })
         .catch(err =>{
             if(err.response.status == 500){
@@ -27,6 +36,7 @@ const MyPage_Main = () => {
             //console.log('fail');
             }
         })
+
     },[]);
     
     return (
@@ -42,7 +52,7 @@ const MyPage_Main = () => {
                             <div className={styles.info_title}>
                                 <div className={styles.title_area}>
                                     <h2>
-                                        <a href='#'>BJ개고수년</a>
+                                        <a href='#'>{localStorage.getItem('broadcastNm')}</a>
                                     </h2>
                                     <div className={styles.info_broadcast}>
                                         <button type='button' tip='방송국 정보'>
@@ -52,11 +62,13 @@ const MyPage_Main = () => {
                                 </div>
                                 <div className={styles.explanation}>
                                     <p>
-                                        <span>BJ개고수년님의 방송국 입니다.자기소개를 입력해주세요.</span>
+                                        <span>{localStorage.getItem('broadcastMyMessage')}</span>
                                     </p>
-                                    <button type='button' className={styles.modify}>
-                                        <span>수정</span>
-                                    </button>
+                                    <Link to="/MyPage_InfoSetting">
+                                        <button type='button' className={styles.modify}>
+                                            <span>수정</span>
+                                        </button>
+                                    </Link>
                                 </div>
                             </div>
                             <div className={styles.items}>
@@ -261,6 +273,9 @@ const MyPage_Main = () => {
                         </div>
                     </div>
                 </article>
+            </div>
+            <div className={styles.footer}>
+                ⓒ AmericaTV Corp.
             </div>
         </div>
         

@@ -198,19 +198,13 @@ a, textarea {
     -webkit-animation: left_AC 0.4s ease forwards;
 }
 
-.header .hide-menu {
-    
-}
-
-
-
-
 
 .container {
     position: relative;
     width: 1184px;
     margin: 0 auto;
     z-index: 11;
+    padding: 0px 0 65px;
 }
 
 .sidebar {
@@ -240,7 +234,6 @@ a, textarea {
 
 .sidebar .sidebar_contents {
     background: #f8fafc;
-    width: 180px;
     padding: 0 35px 80px 36px;
 }
 
@@ -305,7 +298,6 @@ a, textarea {
     text-align: center;
     background-color: transparent;
     padding: 0;
-    vertical-align: top;
     outline: none;
     cursor: pointer;
     font-family: inherit;
@@ -407,12 +399,20 @@ a, textarea {
     transition: all 0.2s;
 }
 
-.sidebar .menu_list ul {
+.sidebar .menu_list .content {
+    overflow: hidden;
+    transition: max-height 0.05s ease-out;
+
     position: static;
     opacity: 1;
     visibility: visible;
     top: -9999em;
-    transition: all .1s ease;
+    /* transition: all .1s ease; */
+}
+
+.sidebar .menu_list .content1 {
+    overflow: hidden;
+    transition: max-height 0.05s ease-out;
 }
 
 .sidebar .menu_list ul li {
@@ -441,26 +441,3 @@ a, textarea {
     word-break: break-all;
     white-space: nowrap;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
