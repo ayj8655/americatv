@@ -106,7 +106,7 @@ function MyPage_Template(){
                         {/* profile-box article */}
                         <article>
                             <section className={styles.user_box}>
-                                <a href='/broadcast/:userId'>
+                                <a href={`/broadcast/${localStorage.getItem('userId')}`}>
                                     <div className={styles.user_profile_image} />
                                 </a>
                                 <div className={styles.user_info}>
@@ -118,13 +118,13 @@ function MyPage_Template(){
                                     </span>
                                 </div>
                             </section>
-                            <Link to="/MyPage_BoardWrite">
+                            <Link to={`/broadcast/${localStorage.getItem('userId')}/MyPage_BoardWrite`}>
                                 <button type='button' className={styles.write_board}>
                                     <span>글쓰기</span>
                                 </button>
                             </Link>
                             <div className={styles.adm_broadcast}>
-                                <a href="/MyPage_InfoSetting" className={styles.adm_broadcast1}>
+                                <a href={`/broadcast/${localStorage.getItem('userId')}/MyPage_InfoSetting`} className={styles.adm_broadcast1}>
                                     <span>방송국관리</span>
                                 </a>
                             </div>
@@ -140,7 +140,7 @@ function MyPage_Template(){
                                 </h3>
                                 <ul className={styles.content} ref={listRef}>
                                     <li>
-                                        <a href='/broadcast/:userId'>
+                                        <a href={`/broadcast/${localStorage.getItem('userId')}`}>
                                             <strong>전체 VOD</strong>
                                         </a>
                                     </li>
