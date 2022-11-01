@@ -21,20 +21,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.americatv.entity.BlackList;
 import com.americatv.entity.User;
 import com.americatv.service.BlackListService;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 import com.americatv.dto.LoginDto;
 import com.americatv.dto.TokenDto;
 import com.americatv.entity.BookMark;
 import com.americatv.service.BookMarkService;
-import com.americatv.entity.User;
 import com.americatv.jwt.JwtFilter;
 import com.americatv.jwt.TokenProvider;
 import com.americatv.service.UserService;
@@ -172,6 +167,25 @@ public class UserController {
 			return new ResponseEntity<String>(ERROR, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
+	
+	@RequestMapping(value = "/", method = RequestMethod.PUT)
+	@PreAuthorize("hasAnyRole('USER','ADMIN')")
+		public ResponseEntity<String> updateUser(@RequestBody User user) throws IOException {
+		try {
+			boolean ret = userService.updateByUserId(user);
+			if (!ret) {
+				return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
+			}
+
+			System.out.println("회원 수정 성공");
+			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
+		} catch (Exception e) {
+			System.out.println("회원 수정 에러");
+			e.printStackTrace();
+			return new ResponseEntity<String>(ERROR, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
 
 	@PostMapping("/bookmark")
 	public String boookMark() {

@@ -83,7 +83,7 @@ function MyPage_Template(){
                                 </button>
                             </div>
                             <a href='#' className={styles.nickname}>
-                                개고수년<em></em>
+                                {localStorage.getItem('userNick')}<em></em>
                             </a>
                             <div>
                                 <span></span>
@@ -106,23 +106,25 @@ function MyPage_Template(){
                         {/* profile-box article */}
                         <article>
                             <section className={styles.user_box}>
-                                <a href='#'>
+                                <a href='/broadcast/:userId'>
                                     <div className={styles.user_profile_image} />
                                 </a>
                                 <div className={styles.user_info}>
                                     <div className={styles.user_nick}>
-                                        <h2>개고수년</h2>
+                                        <h2>{localStorage.getItem('userNick')}</h2>
                                     </div>
                                     <span className={styles.user_id}>
-                                        @jsm960108
+                                        @{localStorage.getItem('userId')}
                                     </span>
                                 </div>
                             </section>
-                            <button type='button' className={styles.write_board}>
-                                <span>글쓰기</span>
-                            </button>
+                            <Link to="/MyPage_BoardWrite">
+                                <button type='button' className={styles.write_board}>
+                                    <span>글쓰기</span>
+                                </button>
+                            </Link>
                             <div className={styles.adm_broadcast}>
-                                <a href='#' className={styles.adm_broadcast1}>
+                                <a href="/MyPage_InfoSetting" className={styles.adm_broadcast1}>
                                     <span>방송국관리</span>
                                 </a>
                             </div>
@@ -138,7 +140,7 @@ function MyPage_Template(){
                                 </h3>
                                 <ul className={styles.content} ref={listRef}>
                                     <li>
-                                        <a href='#'>
+                                        <a href='/broadcast/:userId'>
                                             <strong>전체 VOD</strong>
                                         </a>
                                     </li>
