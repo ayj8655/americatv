@@ -29,7 +29,7 @@ useEffect(() => {
             <Route path='/login' element={<Login/>}></Route>
             <Route path='/agreement' element={<Agreement/>}></Route>
             <Route path='/signup' element={<Signup/>}></Route>
-            <Route path='/MyPage_Main' element={<MyPage_Main/>}></Route>
+            <Route path='/broadcast/:userid' element={<MyPage_Main/>}></Route> 
             <Route path='/Slider' element={<Slider/>}></Route>
           </Routes>      
       </BrowserRouter>

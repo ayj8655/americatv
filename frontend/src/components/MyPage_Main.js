@@ -1,17 +1,33 @@
 import React, {useState, useEffect} from 'react';
+import {useHistory, useParams} from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import styles from '../css/MyPage_Main.module.css';
 import MyPage_Template from '../components/MyPage_Template';
+import axiosInstance from '../axiosConfig';
 
 const MyPage_Main = () => {
 
+    const {userid} = useParams();
+    
     const [scrollPosition, setScrollPosition] = useState(0);
     const updateScroll = () => {
         setScrollPosition(window.scrollY || document.documentElement.scrollTop);
     }
     useEffect(()=>{
         window.addEventListener('scroll', updateScroll);
-    });
+        console.log(userid);
+            
+        axiosInstance.get('/broadcast/' + `${userid}`)
+        .then(res => {
+            console.log(res.data);
+        })
+        .catch(err =>{
+            if(err.response.status == 500){
+            alert('없는 방송국이거나 주소가 잘못되었을 수 있습니다.');
+            //console.log('fail');
+            }
+        })
+    },[]);
     
     return (
     <>
