@@ -32,6 +32,7 @@ useEffect(() => {
             <Route path='/login' element={<Login/>}></Route>
             <Route path='/agreement' element={<Agreement/>}></Route>
             <Route path='/signup' element={<Signup/>}></Route>
+
             <Route path='/broadcast/:userid' element={<MyPage_Main/>}></Route>
             <Route path='/MyPage_Template' element={<MyPage_Template/>}></Route>
             <Route path='/MyPage_BoardWrite' element={<MyPage_BoardWrite/>}></Route>

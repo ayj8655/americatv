@@ -1,8 +1,10 @@
 import React, {useState, useEffect} from 'react';
+
 import {Link, useHistory, useParams, useLocation, useNavigate} from 'react-router-dom';
 import styles from '../css/MyPage_Main.module.css';
 import MyPage_Template from '../components/MyPage_Template';
 import axiosInstance from '../axiosConfig.js'
+
 
 const MyPage_Main = () => {
 
@@ -20,6 +22,7 @@ const MyPage_Main = () => {
         window.addEventListener('scroll', updateScroll);
         console.log(userid);
 
+            
         axiosInstance.get('/broadcast/' + `${userid}`)
         .then(res => {
             console.log(res.data);
@@ -28,10 +31,12 @@ const MyPage_Main = () => {
             navigate(location);
         })
         .catch(err =>{
-            console.error(err);
-            console.log('fail');
+            if(err.response.status == 500){
+            alert('없는 방송국이거나 주소가 잘못되었을 수 있습니다.');
+            //console.log('fail');
+            }
         })
-        
+
     },[]);
     
     return (

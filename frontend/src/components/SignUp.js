@@ -54,7 +54,7 @@ function Join() {
     };
 
     const onChangeUserBirth = (e) => {
-        const BirthRegex = /^(19[0-9][0-9]|20\d{2})(0[0-9]|1[0-2])(0[1-9]|[1-2][0-9]|3[0-1])$/;
+        const BirthRegex = /^(19[0-9][0-9]|20\d{2})-(0[0-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/;
         if (!e.target.value || BirthRegex.test(e.target.value)) setUserBirthError(false);
         else setUserBirthError(true);
         setUserBirth(e.target.value);
@@ -83,44 +83,101 @@ function Join() {
         if (!email) setEmailError(true);
         if (!phoneNumber) setphoneNumberError(true);
 
-        if (userId && password && confirmPassword && userName && email) return true;
+        if (userId && password && confirmPassword && userName && email && phoneNumber) return true;
+        else return false;
+    }
+
+    const userIdValidation = () => {
+        if (!userId) setUserIdError(true);
+        if (userId) return true;
+        else return false;
+    }
+
+    const emailValidation = () => {
+        if (!email) setEmailError(true);
+        if (email) return true;
+        else return false;
+    }
+
+    const phoneValidation = () => {
+        if (!phoneNumber) setphoneNumberError(true);
+        if (phoneNumber) return true;
         else return false;
     }
 
     const onSubmit = (e) => {
-        if (validation()) return ;
-
-        axios.post('/ayj/signup', {
-            userId:"qwer",
-            userPw:"qwer",
-            userNick:"qwer",
-            userNm:"qwer",
-            userBirth:"1996-03-05",
-            userEmail:"qwer@naver.com",
-            userPhone:"010-7777-7197"
-        })
-        .then(res => {
-            if (!res.data) {
-            this.$fire({
-                text: "정보가 일치하지 않습니다",
-                type: "error",
+        if (validation()) {
+            axios.post('/ayj/signup', {
+                userId: userId,
+                userPw: password,
+                userNm: userName,
+                userNick : "nick",
+                userBirth: userBirth,
+                userEmail: email,
+                userPhone: phoneNumber
             })
-            }
-            else {
-                console.log(res);
-            }
-        })
-        .catch(err => {
-            console.error(err);
-        })
-        // API Call
+                .then(res => {
+                    if (!res.data) {
+                        this.$fire({
+                            text: "정보가 일치하지 않습니다",
+                            type: "error",
+                        })
+                    }
+                    else {
+                        console.log(res);
+                    }
+                })
+                .catch(err => {
+                    console.error(err);
+                })
+            // API Call  
+        }
     }
 
+    const checkId = (e) => { 
+        if(userIdValidation()) {
+            axios.get('/ayj/pass/confirmId/' + `${userId}`)
+                .then(res => {
+                    if(res.status == 204) {
+                        alert("중복된 id입니다.")
+                    } else if (res.status == 200) {
+                        alert("사용 가능한 ID입니다.")
+                    }
+                })
+        }
+    }
+
+    const checkEmail = (e) => { 
+        if(userIdValidation()) {
+            axios.get('/ayj/pass/confirmEmail/' + `${email}`)
+                .then(res => {
+                    if(res.status == 204) {
+                        alert("중복된 이메일입니다.")
+                    } else if (res.status == 200) {
+                        alert("사용 가능한 이메일입니다.")
+                    }
+                })
+        }
+    }
+
+    const checkPhone = (e) => { 
+        if(userIdValidation()) {
+            axios.get('/ayj/pass/confirmPhone/' + `${phoneNumber}`)
+                .then(res => {
+                    if(res.status == 204) {
+                        alert("중복된 번호입니다.")
+                    } else if (res.status == 200) {
+                        alert("사용 가능한 번호입니다.")
+                    }
+                })
+        }
+    }
+    
     return (
         <body>
             <form>
                 <div className='SignupLogo'>
-                    <h2><Link to="/main" className="signup_link_main">America TV</Link></h2>
+                    <h2><Link to="/" className="signup_link_main">America TV</Link></h2>
                 </div>
                 <div>
                     <Container className="panel">
@@ -171,6 +228,22 @@ function Join() {
                             <div className="d-grid gap-1">
                                 <Button variant="secondary" onClick={onSubmit}>
                                     회원가입
+                                </Button>
+                            </div>
+
+                            <div className="d-grid gap-1">
+                                <Button variant="secondary" onClick={checkId}>
+                                    중복체크
+                                </Button>
+                            </div>
+                            <div className="d-grid gap-1">
+                                <Button variant="secondary" onClick={checkEmail}>
+                                    이메일중복체크
+                                </Button>
+                            </div>
+                            <div className="d-grid gap-1">
+                                <Button variant="secondary" onClick={checkPhone}>
+                                    폰번호 중복체크
                                 </Button>
                             </div>
                         </Form>

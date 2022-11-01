@@ -51,7 +51,7 @@ function MyPage_Template(){
             <header className={styles.header}>
                 <div className={styles.inner_header}>
                     <h1>
-                        <a href="/" className={styles.icon}></a>
+                        <a href='/' className={styles.icon}></a>
                     </h1>
                     <div className={styles.search_box}>
                         <form>
