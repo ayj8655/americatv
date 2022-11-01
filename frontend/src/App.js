@@ -4,6 +4,9 @@ import Signup from './components/SignUp';
 import Login from './components/Login';
 import Main from './components/Main';
 import MyPage_Main from './components/MyPage_Main';
+import MyPage_BoardWrite from './components/MyPage_BoardWrite';
+import MyPage_InfoSetting from './components/MyPage_InfoSetting';
+import MyPage_Template from './components/MyPage_Template';
 import Agreement from './components/Agreement';
 import Slider from './components/exSlider'
 import './App.css';
@@ -29,7 +32,10 @@ useEffect(() => {
             <Route path='/login' element={<Login/>}></Route>
             <Route path='/agreement' element={<Agreement/>}></Route>
             <Route path='/signup' element={<Signup/>}></Route>
-            <Route path='/MyPage_Main' element={<MyPage_Main/>}></Route>
+            <Route path='/broadcast/:userid' element={<MyPage_Main/>}></Route>
+            <Route path='/MyPage_Template' element={<MyPage_Template/>}></Route>
+            <Route path='/MyPage_BoardWrite' element={<MyPage_BoardWrite/>}></Route>
+            <Route path='/MyPage_InfoSetting' element={<MyPage_InfoSetting/>}></Route>
             <Route path='/Slider' element={<Slider/>}></Route>
           </Routes>      
       </BrowserRouter>

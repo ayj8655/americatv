@@ -18,10 +18,9 @@ article, aside, footer, header, hgroup, menu, nav, section, main {
 }
 
 .container {
-    position: relative;
     width: 1184px;
     margin: 0 auto;
-    padding: 65px 0 90px;
+    padding-left: 250px;
     z-index: 11;
 }
 
@@ -35,7 +34,6 @@ article, aside, footer, header, hgroup, menu, nav, section, main {
     position: relative;
     width: 932px;
     min-height: 900px;
-    margin-left: 252px;
     padding: 0 0 0 0;
     z-index: 4;
 }
@@ -652,8 +650,6 @@ article, aside, footer, header, hgroup, menu, nav, section, main {
     top: 4px;
     left: 0;
     background-size: cover;
-    background-position: 50% 50%;
-    background-repeat: no-repeat;
     border-radius: 50%;
     box-sizing: border-box;
     cursor: pointer;
@@ -813,4 +809,16 @@ article, aside, footer, header, hgroup, menu, nav, section, main {
     width: 2px;
     height: 2px;
     margin-top: -1px;
+}
+
+.footer {
+    width: 100%;
+    margin: 160px 0 0 0;
+    border: 0;
+    box-sizing: border-box;
+    color: #666;
+    font-size: 13px;
+    font-family: tahoma;
+    text-align: center;
+    padding-bottom: 90px;
 }
