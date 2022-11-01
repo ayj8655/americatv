@@ -47,7 +47,7 @@ function TemplateMain(props){
                     </div>
                     <div className={isOpen ? styles.userArea : styles.hide_userArea}>
                         <div className={styles.btn_quick}>
-                            <Link to="/broadcast/:userId" target="_top" className={styles.myBroadcast}>
+                            <Link to={`/broadcast/${localStorage.getItem('userId')}`} target="_top" className={styles.myBroadcast}>
                                 방송국
                             </Link>
                             <Link to="/" target="_top" className={styles.bookMark}>

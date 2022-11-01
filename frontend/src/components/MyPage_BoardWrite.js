@@ -75,14 +75,12 @@ const MyPage_BoardWrite = () => {
                                 </div>
                                 <div className={styles.editor_text}>
                                     <section className={styles.editor_header}>
-
                                     </section>
                                     <textarea className={styles.editor_body}>
-                                        
                                     </textarea>
                                 </div>
                             </div>
-                            <div>
+                            <div className={styles.confirm_btn_area}>
                                 <button className={styles.confirm_btn}>
                                     <span>확인</span>
                                 </button>
