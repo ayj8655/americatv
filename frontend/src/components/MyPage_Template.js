@@ -118,13 +118,13 @@ function MyPage_Template(){
                                     </span>
                                 </div>
                             </section>
-                            <Link to={`/MyPage_BoardWrite/${localStorage.getItem('userId')}`}>
+                            <Link to={`/broadcast/${localStorage.getItem('userId')}/MyPage_BoardWrite`}>
                                 <button type='button' className={styles.write_board}>
                                     <span>글쓰기</span>
                                 </button>
                             </Link>
                             <div className={styles.adm_broadcast}>
-                                <a href={`/MyPage_InfoSetting/${localStorage.getItem('userId')}`} className={styles.adm_broadcast1}>
+                                <a href={`/broadcast/${localStorage.getItem('userId')}/MyPage_InfoSetting`} className={styles.adm_broadcast1}>
                                     <span>방송국관리</span>
                                 </a>
                             </div>
