@@ -1,6 +1,7 @@
 package com.americatv.controller;
 
 import java.io.IOException;
+import java.util.Objects;
 import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
@@ -239,16 +240,21 @@ public class UserController {
 		try {
 			Optional<User> user = userService.getMyUserWithAuthorities();
 
-			if (!user.isPresent()) 
-				return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
+			if (!Objects.equals(user.get().getUserId(),loginDto.getUserId())) 
+				return new ResponseEntity<String>(FAIL, HttpStatus.INTERNAL_SERVER_ERROR);
 			
+			UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
+					loginDto.getUserId(), loginDto.getUserPw());
+
+			Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
+	
 			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 
 		} catch (Exception e) {
 			System.out.println("회원정보 검색 오류");
-			return new ResponseEntity<String>(ERROR, HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<String>(FAIL, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 //			return ResponseEntity.ok(userService.getMyUserWithAuthorities());
 	}
-
+	
 }
