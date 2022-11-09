@@ -7,6 +7,7 @@ import Container from 'react-bootstrap/Container';
 import { Link } from 'react-router-dom'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../css/Signup.module.css';
+import axiosInstance from '../axiosConfig';
 import axios from 'axios'
 
 
@@ -16,6 +17,7 @@ function Join() {
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [userName, setUserName] = useState("");
+    const [userNick, setUserNick] = useState("");
     const [userBirth, setUserBirth] = useState("");
     const [email, setEmail] = useState("");
     const [phoneNumber, setphoneNumber] = useState("");
@@ -24,9 +26,11 @@ function Join() {
     const [passwordError, setPasswordError] = useState(false);
     const [confirmPasswordError, setConfirmPasswordError] = useState(false);
     const [userNameError, setUserNameError] = useState(false);
+    const [userNickError, setUserNickError] = useState(false);
     const [userBirthError, setUserBirthError] = useState(false);
     const [emailError, setEmailError] = useState(false);
     const [phoneNumberError, setphoneNumberError] = useState(false);
+    const [userIdConfirm, setuserIdConfirm] = useState(false);
 
     const onChangeUserId = (e) => {
         const userIdRegex = /^[A-Za-z0-9+]{5,}$/;
@@ -54,7 +58,7 @@ function Join() {
     };
 
     const onChangeUserBirth = (e) => {
-        const BirthRegex = /^(19[0-9][0-9]|20\d{2})(0[0-9]|1[0-2])(0[1-9]|[1-2][0-9]|3[0-1])$/;
+        const BirthRegex = /^(19[0-9][0-9]|20\d{2})-(0[0-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/;
         if (!e.target.value || BirthRegex.test(e.target.value)) setUserBirthError(false);
         else setUserBirthError(true);
         setUserBirth(e.target.value);
@@ -82,45 +86,64 @@ function Join() {
         if (!userBirth) setUserBirthError(true);
         if (!email) setEmailError(true);
         if (!phoneNumber) setphoneNumberError(true);
+        if (!userIdConfirm) setuserIdConfirm(true);
 
-        if (userId && password && confirmPassword && userName && email) return true;
-        else return false;
+        if (userId && password && confirmPassword && userName && email && phoneNumber && userIdConfirm) {
+            console.log("true");
+            return true;
+        }
+        else {
+            console.log("false");
+            return false;
+        }
     }
 
-    const onSubmit = (e) => {
-        if (validation()) return ;
+    const idConfirm = () =>{
+        axios.get('/ayj/pass/confirmId/'+`${userId}`)
+        .then(res => {
+            
+        })
+        .catch(err => {
 
-        axios.post('/ayj/signup', {
-            userId:"qwer",
-            userPw:"qwer",
-            userNick:"qwer",
-            userNm:"qwer",
-            userBirth:"1996-03-05",
-            userEmail:"qwer@naver.com",
-            userPhone:"010-7777-7197"
+        })
+    }
+
+    const onSubmit = () => {
+        if (validation()) { // true 일 때 ,
+        console.log(userId);
+        console.log(password);
+        console.log(userName);
+        console.log(userBirth);
+        console.log(email);
+        console.log(phoneNumber);
+       axios.post('/ayj/signup', {
+            userId:userId,
+            userPw:password,
+            userNick:"moCoCo",
+            userNm:userName,
+            userBirth:userBirth,
+            userEmail:email,
+            userPhone:phoneNumber
         })
         .then(res => {
-            if (!res.data) {
-            this.$fire({
-                text: "정보가 일치하지 않습니다",
-                type: "error",
-            })
-            }
-            else {
-                console.log(res);
-            }
+            console.log("POST SUCCESS");
+            console.log(res);
         })
         .catch(err => {
             console.error(err);
         })
-        // API Call
+    // API Call
+        }
+        else{
+            console.log("validation() is not true");
+        }
     }
 
     return (
-        <body>
-            <form>
+        
+           <>
                 <div className='SignupLogo'>
-                    <h2><Link to="/main" className="signup_link_main">America TV</Link></h2>
+                    <h2><Link to="/" className="signup_link_main">America TV</Link></h2>
                 </div>
                 <div>
                     <Container className="panel">
@@ -128,19 +151,20 @@ function Join() {
                             <Form.Group as={Row} className="mb-3">
                                 <Col sm>
                                     <Form.Control maxLength={20} placeholder="아이디" value={userId} onChange={onChangeUserId} />
-                                    {userIdError && <div class="invalid-input">최고 5글자 이상 영문자와 숫자로만 이루어지게 해주세요.</div>}
+                                    {userIdError && <div className="invalid-input">최고 5글자 이상 영문자와 숫자로만 이루어지게 해주세요.</div>}
                                 </Col>
+                                <input type='button' value="중복확인" onClick={idConfirm}></input>
                             </Form.Group>
                             <Form.Group as={Row} className="mb-3">
                                 <Col sm>
                                     <Form.Control maxLength={20} type="password" placeholder="비밀번호" value={password} onChange={onChangePassword} />
-                                    {passwordError && <div class="invalid-input">문자, 숫자를 조합하여 8자 이상으로 입력해주세요. </div>}
+                                    {passwordError && <div className="invalid-input">문자, 숫자를 조합하여 8자 이상으로 입력해주세요. </div>}
                                 </Col>
                             </Form.Group>
                             <Form.Group as={Row} className="mb-3">
                                 <Col sm>
                                     <Form.Control maxLength={20} type="password" placeholder="비밀번호 확인" value={confirmPassword} onChange={onChangeConfirmPassword} />
-                                    {confirmPasswordError && <div class="invalid-input">비밀번호가 맞지 않습니다.</div>}
+                                    {confirmPasswordError && <div className="invalid-input">비밀번호가 맞지 않습니다.</div>}
                                 </Col>
                             </Form.Group>
                             <Form.Group as={Row} className="mb-3">
@@ -158,13 +182,13 @@ function Join() {
                             <Form.Group as={Row} className="mb-3">
                                 <Col sm>
                                     <Form.Control maxLength={50} type="input" placeholder="이메일" value={email} onChange={onChangeEmail} />
-                                    {emailError && <div class="invalid-input">이메일 형식이 올바르지 않습니다. 다시 확인해주세요.</div>}
+                                    {emailError && <div className="invalid-input">올바른 이메일 형태가 아닙니다.</div>}
                                 </Col>
                             </Form.Group>
                             <Form.Group as={Row} className="mb-3">
                                 <Col sm>
                                     <Form.Control maxLength={50} type="input" placeholder="휴대폰" value={phoneNumber} onChange={onChangePhoneNumber} />
-                                    {phoneNumberError && <div class="invalid-input">잘못된 형식의 번호입니다.</div>}
+                                    {phoneNumberError && <div className="invalid-input">잘못된 형식의 번호입니다.</div>}
                                 </Col>
                             </Form.Group>
                             <br />
@@ -178,8 +202,7 @@ function Join() {
                         <span className="text">기존 계정이 존재하나요? <Link to="/login" className="link">Sign In</Link></span>
                     </Container>
                 </div>
-            </form>
-        </body>
+                </>
     );
 }
 

@@ -15,23 +15,7 @@ import ex6 from '../images/example6.jpg';
 import profile from '../images/profile.jpg';
 
 
-
-
-
-   
-
-
-function Main(props){
-    let [doLogin, setIsLogin] = useState(props.isLogin);
-    useEffect(() => {
-        if(localStorage.getItem('userId') === null){
-            console.log('Main not Login');
-            
-        }else{
-          setIsLogin(true);
-          //console.log('Main js Login!');
-        }
-    },[])
+function Main(){
 
     const TOTAL_SLIDES = 6;
     const [currentSlide, setCurrentSlide] = useState(0);
@@ -57,7 +41,7 @@ function Main(props){
 
     return(
         <>
-        <TemplateMain isLogin={doLogin}>
+        <TemplateMain>
         </TemplateMain>
         <section className={styles.list_container}>
             <div className={styles.mainBanners}>
