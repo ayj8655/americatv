@@ -2,13 +2,18 @@ package com.americatv.dao;
 
 import java.util.Optional;
 
+import javax.transaction.Transactional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.http.ResponseEntity;
 
 import com.americatv.entity.Board;
 import com.americatv.entity.BookMark;
 
 public interface BoardDAO extends JpaRepository <Board, Integer>{
 	
-	public Optional<BookMark> findByUserCd(int user_cd);
+	public Optional<Board> findByBoardCd(int boardCd);
 	
+	@Transactional
+	public void deleteByBoardCd(int boardCd);
 }

@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react';
+
 import {useHistory, useParams, useLocation, useNavigate} from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import styles from '../css/MyPage_Main.module.css';
@@ -8,41 +9,39 @@ import axiosInstance from '../axiosConfig';
 const MyPage_Main = () => {
 
     const {userid} = useParams();
-    
+
    // const[change, setchange] = useState(localStorage.getItem('Message'));
    // const[change2, setchange2] = useState(localStorage.getItem('Name'));
     const location = useLocation();
     const navigate = useNavigate();
     //console.log(location);
 
-    
-    
 
     const [scrollPosition, setScrollPosition] = useState(0);
     const updateScroll = () => {
         setScrollPosition(window.scrollY || document.documentElement.scrollTop);
     }
+    
     useEffect(()=>{
         window.addEventListener('scroll', updateScroll);
         console.log(userid);
 
-            axiosInstance.get('/broadcast/' + `${userid}`)
+            
+        axiosInstance.get('/broadcast/' + `${userid}`)
         .then(res => {
             console.log(res.data);
-            localStorage.setItem("Message", res.data.broadcastMyMessage);
-            localStorage.setItem("Name", res.data.broadcastNm);
+            localStorage.setItem("broadcastMyMessage", res.data.broadcastMyMessage);
+            localStorage.setItem("broadcastNm", res.data.broadcastNm);
             navigate(location);
-            //setchange(change => localStorage.getItem("Message"));
-            //setchange2(change2 => localStorage.getItem("Name"));
         })
         .catch(err =>{
             if(err.response.status == 500){
-            navigate("/checkpw")
+
             alert('없는 방송국이거나 주소가 잘못되었을 수 있습니다.');
             //console.log('fail');
             }
         })
-        
+
     },[]);
     
     return (
@@ -58,7 +57,9 @@ const MyPage_Main = () => {
                             <div className={styles.info_title}>
                                 <div className={styles.title_area}>
                                     <h2>
-                                        <a href='#'>bh개고수년</a>
+
+                                        <a href='#'>{localStorage.getItem('broadcastNm')}</a>
+
                                     </h2>
                                     <div className={styles.info_broadcast}>
                                         <button type='button' tip='방송국 정보'>
@@ -68,11 +69,15 @@ const MyPage_Main = () => {
                                 </div>
                                 <div className={styles.explanation}>
                                     <p>
-                                        <span>{localStorage.getItem('Message')}</span>
+
+                                        <span>{localStorage.getItem('broadcastMyMessage')}</span>
+
                                     </p>
-                                    <button type='button' className={styles.modify}>
-                                        <span>수정</span>
-                                    </button>
+                                    <Link to="/MyPage_InfoSetting">
+                                        <button type='button' className={styles.modify}>
+                                            <span>수정</span>
+                                        </button>
+                                    </Link>
                                 </div>
                             </div>
                             <div className={styles.items}>
@@ -277,6 +282,9 @@ const MyPage_Main = () => {
                         </div>
                     </div>
                 </article>
+            </div>
+            <div className={styles.footer}>
+                ⓒ AmericaTV Corp.
             </div>
         </div>
         

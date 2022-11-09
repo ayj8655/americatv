@@ -88,57 +88,97 @@ function Join() {
         if (!phoneNumber) setphoneNumberError(true);
         if (!userIdConfirm) setuserIdConfirm(true);
 
-        if (userId && password && confirmPassword && userName && email && phoneNumber && userIdConfirm) {
-            console.log("true");
-            return true;
-        }
-        else {
-            console.log("false");
-            return false;
+
+        if (userId && password && confirmPassword && userName && email && phoneNumber) return true;
+        else return false;
+    }
+
+    const userIdValidation = () => {
+        if (!userId) setUserIdError(true);
+        if (userId) return true;
+        else return false;
+    }
+
+    const emailValidation = () => {
+        if (!email) setEmailError(true);
+        if (email) return true;
+        else return false;
+    }
+
+    const phoneValidation = () => {
+        if (!phoneNumber) setphoneNumberError(true);
+        if (phoneNumber) return true;
+        else return false;
+    }
+
+    const onSubmit = (e) => {
+        if (validation()) {
+            axios.post('/ayj/signup', {
+                userId: userId,
+                userPw: password,
+                userNm: userName,
+                userNick : "nick",
+                userBirth: userBirth,
+                userEmail: email,
+                userPhone: phoneNumber
+            })
+                .then(res => {
+                    if (!res.data) {
+                        this.$fire({
+                            text: "정보가 일치하지 않습니다",
+                            type: "error",
+                        })
+                    }
+                    else {
+                        console.log(res);
+                    }
+                })
+                .catch(err => {
+                    console.error(err);
+                })
+            // API Call  
         }
     }
 
-    const idConfirm = () =>{
-        axios.get('/ayj/pass/confirmId/'+`${userId}`)
-        .then(res => {
-            
-        })
-        .catch(err => {
-
-        })
-    }
-
-    const onSubmit = () => {
-        if (validation()) { // true 일 때 ,
-        console.log(userId);
-        console.log(password);
-        console.log(userName);
-        console.log(userBirth);
-        console.log(email);
-        console.log(phoneNumber);
-       axios.post('/ayj/signup', {
-            userId:userId,
-            userPw:password,
-            userNick:"moCoCo",
-            userNm:userName,
-            userBirth:userBirth,
-            userEmail:email,
-            userPhone:phoneNumber
-        })
-        .then(res => {
-            console.log("POST SUCCESS");
-            console.log(res);
-        })
-        .catch(err => {
-            console.error(err);
-        })
-    // API Call
-        }
-        else{
-            console.log("validation() is not true");
+    const checkId = (e) => { 
+        if(userIdValidation()) {
+            axios.get('/ayj/pass/confirmId/' + `${userId}`)
+                .then(res => {
+                    if(res.status == 204) {
+                        alert("중복된 id입니다.")
+                    } else if (res.status == 200) {
+                        alert("사용 가능한 ID입니다.")
+                    }
+                })
         }
     }
 
+    const checkEmail = (e) => { 
+        if(userIdValidation()) {
+            axios.get('/ayj/pass/confirmEmail/' + `${email}`)
+                .then(res => {
+                    if(res.status == 204) {
+                        alert("중복된 이메일입니다.")
+                    } else if (res.status == 200) {
+                        alert("사용 가능한 이메일입니다.")
+                    }
+                })
+        }
+    }
+
+    const checkPhone = (e) => { 
+        if(userIdValidation()) {
+            axios.get('/ayj/pass/confirmPhone/' + `${phoneNumber}`)
+                .then(res => {
+                    if(res.status == 204) {
+                        alert("중복된 번호입니다.")
+                    } else if (res.status == 200) {
+                        alert("사용 가능한 번호입니다.")
+                    }
+                })
+        }
+    }
+    
     return (
         
            <>
@@ -195,6 +235,22 @@ function Join() {
                             <div className="d-grid gap-1">
                                 <Button variant="secondary" onClick={onSubmit}>
                                     회원가입
+                                </Button>
+                            </div>
+
+                            <div className="d-grid gap-1">
+                                <Button variant="secondary" onClick={checkId}>
+                                    중복체크
+                                </Button>
+                            </div>
+                            <div className="d-grid gap-1">
+                                <Button variant="secondary" onClick={checkEmail}>
+                                    이메일중복체크
+                                </Button>
+                            </div>
+                            <div className="d-grid gap-1">
+                                <Button variant="secondary" onClick={checkPhone}>
+                                    폰번호 중복체크
                                 </Button>
                             </div>
                         </Form>

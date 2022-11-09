@@ -6,6 +6,7 @@ import styles from '../css/Login.module.css';
 function Login() {
     //e.preventDefault();
     let navigate = useNavigate();
+
     if(localStorage.getItem('userId') != null){
         navigate('/');
     }
