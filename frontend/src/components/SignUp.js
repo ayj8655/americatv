@@ -7,6 +7,7 @@ import Container from 'react-bootstrap/Container';
 import { Link } from 'react-router-dom'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../css/Signup.module.css';
+import axiosInstance from '../axiosConfig';
 import axios from 'axios'
 
 
@@ -16,6 +17,7 @@ function Join() {
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [userName, setUserName] = useState("");
+    const [userNick, setUserNick] = useState("");
     const [userBirth, setUserBirth] = useState("");
     const [email, setEmail] = useState("");
     const [phoneNumber, setphoneNumber] = useState("");
@@ -24,9 +26,11 @@ function Join() {
     const [passwordError, setPasswordError] = useState(false);
     const [confirmPasswordError, setConfirmPasswordError] = useState(false);
     const [userNameError, setUserNameError] = useState(false);
+    const [userNickError, setUserNickError] = useState(false);
     const [userBirthError, setUserBirthError] = useState(false);
     const [emailError, setEmailError] = useState(false);
     const [phoneNumberError, setphoneNumberError] = useState(false);
+    const [userIdConfirm, setuserIdConfirm] = useState(false);
 
     const onChangeUserId = (e) => {
         const userIdRegex = /^[A-Za-z0-9+]{5,}$/;
@@ -82,6 +86,8 @@ function Join() {
         if (!userBirth) setUserBirthError(true);
         if (!email) setEmailError(true);
         if (!phoneNumber) setphoneNumberError(true);
+        if (!userIdConfirm) setuserIdConfirm(true);
+
 
         if (userId && password && confirmPassword && userName && email && phoneNumber) return true;
         else return false;
@@ -174,8 +180,8 @@ function Join() {
     }
     
     return (
-        <body>
-            <form>
+        
+           <>
                 <div className='SignupLogo'>
                     <h2><Link to="/" className="signup_link_main">America TV</Link></h2>
                 </div>
@@ -185,19 +191,20 @@ function Join() {
                             <Form.Group as={Row} className="mb-3">
                                 <Col sm>
                                     <Form.Control maxLength={20} placeholder="아이디" value={userId} onChange={onChangeUserId} />
-                                    {userIdError && <div class="invalid-input">최고 5글자 이상 영문자와 숫자로만 이루어지게 해주세요.</div>}
+                                    {userIdError && <div className="invalid-input">최고 5글자 이상 영문자와 숫자로만 이루어지게 해주세요.</div>}
                                 </Col>
+                                <input type='button' value="중복확인" onClick={idConfirm}></input>
                             </Form.Group>
                             <Form.Group as={Row} className="mb-3">
                                 <Col sm>
                                     <Form.Control maxLength={20} type="password" placeholder="비밀번호" value={password} onChange={onChangePassword} />
-                                    {passwordError && <div class="invalid-input">문자, 숫자를 조합하여 8자 이상으로 입력해주세요. </div>}
+                                    {passwordError && <div className="invalid-input">문자, 숫자를 조합하여 8자 이상으로 입력해주세요. </div>}
                                 </Col>
                             </Form.Group>
                             <Form.Group as={Row} className="mb-3">
                                 <Col sm>
                                     <Form.Control maxLength={20} type="password" placeholder="비밀번호 확인" value={confirmPassword} onChange={onChangeConfirmPassword} />
-                                    {confirmPasswordError && <div class="invalid-input">비밀번호가 맞지 않습니다.</div>}
+                                    {confirmPasswordError && <div className="invalid-input">비밀번호가 맞지 않습니다.</div>}
                                 </Col>
                             </Form.Group>
                             <Form.Group as={Row} className="mb-3">
@@ -215,13 +222,13 @@ function Join() {
                             <Form.Group as={Row} className="mb-3">
                                 <Col sm>
                                     <Form.Control maxLength={50} type="input" placeholder="이메일" value={email} onChange={onChangeEmail} />
-                                    {emailError && <div class="invalid-input">이메일 형식이 올바르지 않습니다. 다시 확인해주세요.</div>}
+                                    {emailError && <div className="invalid-input">올바른 이메일 형태가 아닙니다.</div>}
                                 </Col>
                             </Form.Group>
                             <Form.Group as={Row} className="mb-3">
                                 <Col sm>
                                     <Form.Control maxLength={50} type="input" placeholder="휴대폰" value={phoneNumber} onChange={onChangePhoneNumber} />
-                                    {phoneNumberError && <div class="invalid-input">잘못된 형식의 번호입니다.</div>}
+                                    {phoneNumberError && <div className="invalid-input">잘못된 형식의 번호입니다.</div>}
                                 </Col>
                             </Form.Group>
                             <br />
@@ -251,8 +258,7 @@ function Join() {
                         <span className="text">기존 계정이 존재하나요? <Link to="/login" className="link">Sign In</Link></span>
                     </Container>
                 </div>
-            </form>
-        </body>
+                </>
     );
 }
 
