@@ -142,7 +142,7 @@ function Join() {
 
     const checkId = (e) => { 
         if(userIdValidation()) {
-            axios.get('/ayj/pass/confirmId/' + `${userId}`)
+            axiosInstance.get('/ayj/pass/confirmId/' + `${userId}`)
                 .then(res => {
                     if(res.status == 204) {
                         alert("중복된 id입니다.")
@@ -193,7 +193,7 @@ function Join() {
                                     <Form.Control maxLength={20} placeholder="아이디" value={userId} onChange={onChangeUserId} />
                                     {userIdError && <div className="invalid-input">최고 5글자 이상 영문자와 숫자로만 이루어지게 해주세요.</div>}
                                 </Col>
-                                <input type='button' value="중복확인" onClick={idConfirm}></input>
+                             
                             </Form.Group>
                             <Form.Group as={Row} className="mb-3">
                                 <Col sm>
