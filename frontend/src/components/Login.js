@@ -40,6 +40,7 @@ function Login() {
                     console.log(res.data);
                     localStorage.setItem('userId', res.data.userId);
                     localStorage.setItem('userNick', res.data.userNick);
+                    localStorage.setItem('userCd', res.data.userCd);
                     //console.log(res.data.userId);
                     alert(res.data.userNick+'님 어서오세요');
                     navigate('/'); 

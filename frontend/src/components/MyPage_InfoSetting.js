@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import styles from '../css/MyPage_InfoSetting.module.css';
 import MyPage_Template from '../components/MyPage_Template';
 
-const MyPage_InfoSetting = () => {
+function MyPage_InfoSetting() {
 
 
     

@@ -6,7 +6,7 @@ import MyPage_Template from '../components/MyPage_Template';
 import axiosInstance from '../axiosConfig.js'
 
 
-const MyPage_Main = () => {
+function MyPage_Main() {
 
     const {userid} = useParams();
 
