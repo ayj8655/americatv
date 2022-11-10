@@ -10,8 +10,10 @@ public interface BlackListDAO extends JpaRepository <BlackList, Integer>{
 
 
 	public Optional<BlackList> findByUserCd(int user_cd);
+
+    public Optional<BlackList> save(String black_user);
 	
-//	public Optional<BlackList> insertByBlackUser(String black_user);
 
-
+	
+	
 }

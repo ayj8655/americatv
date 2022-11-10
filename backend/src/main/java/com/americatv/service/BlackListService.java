@@ -1,5 +1,6 @@
 package com.americatv.service;
 
+import java.util.Date;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +29,21 @@ public class BlackListService {
         
         return blackListDAO.save(black_user);
     }
-
+   
+   @Transactional
+   public BlackList insertblackuser(BlackList blackDto) {
+         
+       BlackList blackuser = BlackList.builder()
+               .userCd(blackDto.getUserCd())
+               .blackDt(new Date())
+               .blackUser(blackDto.getBlackUser())
+               .build();
+       
+       return blackListDAO.save(blackuser);
+    
+       
+   }
+   
 	public Optional<BlackList> findByUserCd(int user_cd) {
 		Optional<BlackList> blacklist = blackListDAO.findByUserCd(user_cd);
 		
@@ -40,17 +55,16 @@ public class BlackListService {
 		
 	}
 	
-//	   public Optional<BlackList> insertByBlackUser(String black_user) {
-//	        Optional<BlackList> blacklist = blackListDAO.insertByBlackUser(black_user);
-//	        
-//	        blacklist.ifPresent(seleteBlackList -> {
-//	            System.out.println(seleteBlackList.getBlackDt());
-//	        });
-//	        
-//	        return blacklist;
-//	        
-//	    }
-	
+   public Optional<BlackList> save(String black_user) {
+        Optional<BlackList> blacklist = blackListDAO.save(black_user);
+        
+        blacklist.ifPresent(seleteBlackList -> {  //값이 있는지 없는지 판단한다.
+            System.out.println(seleteBlackList.getBlackDt());
+        });
+        
+        return blacklist;
+        
+    }  
 	
 	
 	@Transactional(readOnly = true)
@@ -58,8 +72,6 @@ public class BlackListService {
         return blackListDAO.findByUserCd(user_cd);
     }
 	
-//	public Optional<BlackList> postblacklist(String black_user){
-//	    return blackListDAO.insertByBlackUser(black_user);
-//	}
+	
 	
 }

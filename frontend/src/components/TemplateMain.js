@@ -1,11 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import styles from '../css/TemplateMain.module.css'; //styles 쓰면 전부 style로 해야하는듯
 import AFprofile from '../images/AFprofile.gif';
 
 
-function TemplateMain(props){
-    const isLogin = props.isLogin;
+function TemplateMain(){
+    let LoginYN = localStorage.getItem('userId');
+    let flag = false;
+    
+    if(LoginYN != null){
+        flag = true;
+    }
+    
     let navigate = useNavigate();
     const [isOpen , setToggle] = useState(false);
 
@@ -14,12 +20,14 @@ function TemplateMain(props){
     }
 
     const onLogout = () =>{
-        localStorage.removeItem('userId');
+        localStorage.clear();
 
         navigate('/');
 
     }
     //console.log("TemplateMain : " + isLogin);
+    
+
 
     return(
             <>
@@ -34,7 +42,7 @@ function TemplateMain(props){
                             <span>알림</span>
                         </button>
                     </div>
-                   {isLogin ? 
+                   {flag ? 
                    
                    <div className={styles.profileWrap}>
                     <div className={styles.userInfo}>
@@ -56,7 +64,7 @@ function TemplateMain(props){
                         </div>
                         <ul className={styles.menuList}>
                             <li>
-                               <Link to='/' className={styles.my_info}>
+                               <Link to='/userInfo' className={styles.my_info}>
                                     <span>내 정보</span>
                                 </Link> 
                             </li>
@@ -75,7 +83,7 @@ function TemplateMain(props){
                    </div>
                    
                    :
-                   <Link to='login'>
+                   <Link to='/login'>
                         <button type='button' className={styles.loginBtn}>
                         로그인
                         </button>
@@ -83,7 +91,7 @@ function TemplateMain(props){
                     
                     }
                    
-                    {isLogin ? "" : <button type='button' className={styles['btn-settings']}>
+                    {flag ? "" : <button type='button' className={styles['btn-settings']}>
                         설정
                     </button>}
                     <div className={styles.serviceMenu}>
