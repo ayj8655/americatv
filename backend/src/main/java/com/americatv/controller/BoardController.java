@@ -117,5 +117,14 @@ public class BoardController {
            return new ResponseEntity<String>(ERROR, HttpStatus.INTERNAL_SERVER_ERROR);
        }
    }
-
+   
+   @GetMapping("/{broadCastCd}/{cateCd}")
+   @ApiOperation(value = "게시글 리스트 조회", notes = "카테고리 선택시 해당 카테고리의 게시글 출력", response = Board.class)
+   public ResponseEntity<List<Board>> getBoardlist(@PathVariable int cateCd, int broadcastCd) {
+       System.out.println(boardService);
+       
+       List<Board> board = boardService.getboardlist(cateCd, broadcastCd);
+       System.out.println(board);
+       return ResponseEntity.ok(board);
+   }
 }

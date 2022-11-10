@@ -1,5 +1,6 @@
 package com.americatv.dao;
 
+import java.util.List;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
@@ -16,4 +17,9 @@ public interface BoardDAO extends JpaRepository <Board, Integer>{
 	
 	@Transactional
 	public void deleteByBoardCd(int boardCd);
+
+	@Transactional
+    public List<Board> findAllByCateCd(int cateCd);
+
+    public List<Board> findAllByCateCdAndBroadcastCd(int cateCd, int broadcastCd);
 }
