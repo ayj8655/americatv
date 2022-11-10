@@ -25,6 +25,7 @@ function Join() {
     const [userIdError, setUserIdError] = useState(false);
     const [passwordError, setPasswordError] = useState(false);
     const [confirmPasswordError, setConfirmPasswordError] = useState(false);
+    const [userNickError, setUserNickError] = useState(false);
     const [userNameError, setUserNameError] = useState(false);
     const [userNickError, setUserNickError] = useState(false);
     const [userBirthError, setUserBirthError] = useState(false);
@@ -57,6 +58,13 @@ function Join() {
         setUserName(e.target.value)
     };
 
+    const onChangeUserNick = (e) => {
+        const UserNickRegex = /^(?=.*[a-z0-9가-힣])[a-z0-9가-힣]{2,16}$/i;
+        if (!e.target.value || UserNickRegex.test(e.target.value)) setUserNickError(false);
+        else setUserNickError(true);
+        setUserNick(e.target.value);
+    };
+
     const onChangeUserBirth = (e) => {
         const BirthRegex = /^(19[0-9][0-9]|20\d{2})-(0[0-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/;
         if (!e.target.value || BirthRegex.test(e.target.value)) setUserBirthError(false);
@@ -83,13 +91,14 @@ function Join() {
         if (!password) setPasswordError(true);
         if (!confirmPassword) setConfirmPasswordError(true);
         if (!userName) setUserNameError(true);
+        if (!userNick) setUserNickError(true);
         if (!userBirth) setUserBirthError(true);
         if (!email) setEmailError(true);
         if (!phoneNumber) setphoneNumberError(true);
         if (!userIdConfirm) setuserIdConfirm(true);
 
 
-        if (userId && password && confirmPassword && userName && email && phoneNumber) return true;
+        if (userId && password && confirmPassword && userName && userNick && email && phoneNumber) return true;
         else return false;
     }
 
@@ -111,13 +120,19 @@ function Join() {
         else return false;
     }
 
+    const userNickValidation = () => {
+        if (!userNick) setUserNickError(true);
+        if (userNick) return true;
+        else return false;
+    }
+
     const onSubmit = (e) => {
         if (validation()) {
             axios.post('/ayj/signup', {
                 userId: userId,
                 userPw: password,
                 userNm: userName,
-                userNick : "nick",
+                userNick : userNick,
                 userBirth: userBirth,
                 userEmail: email,
                 userPhone: phoneNumber
@@ -148,6 +163,19 @@ function Join() {
                         alert("중복된 id입니다.")
                     } else if (res.status == 200) {
                         alert("사용 가능한 ID입니다.")
+                    }
+                })
+        }
+    }
+
+    const checkUserNick = (e) => { 
+        if(userNickValidation()) {
+            axios.get('/ayj/pass/confirmNick/' + `${userNick}`)
+                .then(res => {
+                    if(res.status == 204) {
+                        alert("중복된 닉네임입니다.")
+                    } else if (res.status == 200) {
+                        alert("사용 가능한 닉네임입니다.")
                     }
                 })
         }
@@ -215,6 +243,12 @@ function Join() {
                             </Form.Group>
                             <Form.Group as={Row} className="mb-3">
                                 <Col sm>
+                                    <Form.Control maxLength={20} placeholder="닉네임" value={userNick} onChange={onChangeUserNick} />
+                                    {userNickError && <div class="invalid-input">2자 이상 16자 이하, 영어 또는 숫자 또는 한글로 구성하세요.</div>}
+                                </Col>
+                            </Form.Group>
+                            <Form.Group as={Row} className="mb-3">
+                                <Col sm>
                                     <Form.Control maxLength={50} type="input" placeholder="생년월일" value={userBirth} onChange={onChangeUserBirth} />
                                     {userBirthError && <div class="invalid-input">생년월일 형태가 아닙니다.</div>}
                                 </Col>
@@ -240,7 +274,12 @@ function Join() {
 
                             <div className="d-grid gap-1">
                                 <Button variant="secondary" onClick={checkId}>
-                                    중복체크
+                                    ID 중복체크
+                                </Button>
+                            </div>
+                            <div className="d-grid gap-1">
+                                <Button variant="secondary" onClick={checkUserNick}>
+                                    닉네임 중복체크
                                 </Button>
                             </div>
                             <div className="d-grid gap-1">

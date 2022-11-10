@@ -1,8 +1,26 @@
 import React, {useState, useEffect} from 'react';
 import styles from '../css/MyPage_BoardWrite.module.css';
 import MyPage_Template from '../components/MyPage_Template';
+import axiosInstance from '../axiosConfig.js';
 
-const MyPage_BoardWrite = () => {
+function MyPage_BoardWrite(props) {
+
+    const[Title, setTitle] = React.useState("");
+    const[Content, setContent] = React.useState("");
+    
+    const ConfirmClicked = () => {
+        axiosInstance.post('/yjy/post', {
+                userCd : localStorage.getItem('userCd'),
+                cateCd : 100,
+                boardTitle : Title,
+                boardContent : Content,
+            })
+            .then(res => {
+                // DB에 Title, Content 저장
+                localStorage.setItem('boardTitle', res.data.boardTitle);
+                localStorage.setItem('boardContent', res.data.boardContent);
+            })
+    };
 
 
     
@@ -71,24 +89,27 @@ const MyPage_BoardWrite = () => {
                             </div>
                             <div className={styles.write_area}>
                                 <div className={styles.subject}>
-                                    <textarea className={styles.subject_name} placeholder='제목을 입력해 주세요' rows='1' maxlenght='100'/>
+                                    <textarea className={styles.subject_name} onChange={(e) => {setTitle(e.target.value);}} placeholder='제목을 입력해 주세요' rows='1' maxlenght='100'/>
                                 </div>
                                 <div className={styles.editor_text}>
                                     <section className={styles.editor_header}>
                                     </section>
-                                    <textarea className={styles.editor_body}>
+                                    <textarea className={styles.editor_body} onChange={(e) => {setContent(e.target.value);}}>
                                     </textarea>
                                 </div>
                             </div>
                             <div className={styles.confirm_btn_area}>
-                                <button className={styles.confirm_btn}>
+                                <div className={styles.confirm_btn} onClick={ConfirmClicked}>
                                     <span>확인</span>
-                                </button>
+                                </div>
                             </div>
                         </form>
                     </div>
 
                 </article>
+            </div>
+            <div className={styles.footer}>
+                ⓒ AmericaTV Corp.
             </div>
         </div>
 

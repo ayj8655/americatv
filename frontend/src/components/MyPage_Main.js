@@ -6,7 +6,7 @@ import styles from '../css/MyPage_Main.module.css';
 import MyPage_Template from '../components/MyPage_Template';
 import axiosInstance from '../axiosConfig';
 
-const MyPage_Main = () => {
+function MyPage_Main() {
 
     const {userid} = useParams();
 
