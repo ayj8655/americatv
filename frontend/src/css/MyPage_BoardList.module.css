@@ -240,183 +240,22 @@ button {
     vertical-align: 11px;
 }
 
-.MainArea {
+.BoardList_Main {
     position: relative;
     padding: 25px 0 0 48px;
     transition: all .2s ease;
     z-index: 10;
 }
 
-.select_board {
-    position: relative;
-    padding-bottom: 14px;
-    z-index: 5;
-}
 
-.select_box {
-    max-width: calc(100% - 100px);
-    display: inline-block;
-    position: relative;
-    background: #fff;
-    z-index: 10;
-    transition: all .2s ease;
-}
 
-.selected {
-    padding: 0 34px 0 0;
-    border: 0;
-    font-size: 16px;
-    font-weight: bold;
-    display: block;
-    position: relative;
-    width: 100%;
-    height: 36px;
-    border-radius: 2px;
-    color: #333;
-    line-height: 36px;
-    box-sizing: border-box;
-    text-align: left;
-}
 
-.selected span {
-    display: inline-block;
-    overflow: hidden;
-    max-width: 630px;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
 
-.selected::after {
-    top: 16px;
-    content: "";
-    position: absolute;
-    right: 8px;
-    background: url(../images/slide_down.svg) 0 0 no-repeat;
-    width: 10px;
-    height: 6px;
-    margin-top: -3px;
-    transition: all .2s ease;
-}
 
-.select_board .btn_basic {
-    position: absolute;
-    top: 0;
-    right: 0;
-}
 
-.btn_basic {
-    padding: 0 16px;
-    min-width: 60px;
-    height: 36px;
-    border: 1px solid #d9dddf;
-    border-radius: 3px;
-    color: #333;
-    font-size: 13px;
-    line-height: 34px;
-    text-align: center;
-    transition: all .2s ease;
-}
 
-.write_area {
-    position: relative;
-    z-index: 4;
-}
 
-.subject {
-    padding-bottom: 18px;
-    border-bottom: 1px solid #d9dddf;
-}
 
-.editor_text {
-    position: relative;
-    margin-top: 29px;
-    border: 1px solid #ddd;
-}
 
-.subject_name {
-    width: 100%;
-    overflow: hidden;
-    min-height: 32px;
-    margin: 0;
-    padding: 0;
-    border: 0;
-    color: #000;
-    font-size: 28px;
-    word-break: break-word;
-    word-wrap: break-word;
-    white-space: pre-wrap;
-    cursor: text;
-    resize: none;
-    outline: none;
-}
 
-.editor_header {
-    position: relative;
-    background: #f8f8f8;
-    min-height: 33px;
-    padding: 0 0 0 7px;
-    border-bottom: 1px solid #ddd;
-    z-index: 10;
-}
 
-.editor_body {
-    height: 430px;
-    width: 882px;
-    display: block;
-    overflow: hidden;
-    margin: 0;
-    padding: 0;
-    border: 0;
-    background: transparent;
-    text-decoration: none;
-    vertical-align: baseline;
-    box-sizing: content-box;
-    position: static;
-    transition: none;
-}
-
-.body_frame {
-    width: 100%;
-    height: 400px;
-    background-color: rgba(0,0,0,0)!important;
-    margin: 0;
-    padding: 0;
-    border: 0;
-    background: transparent;
-    text-decoration: none;
-    vertical-align: baseline;
-    box-sizing: content-box;
-    position: static;
-    transition: none;
-}
-
-.confirm_btn_area {
-    padding-top: 10px;
-}
-
-.confirm_btn {
-    position: absolute;
-    right: 0;
-    padding: 0 16px;
-    min-width: 60px;
-    height: 36px;
-    border: 1px solid #d9dddf;
-    border-radius: 3px;
-    color: #333;
-    font-size: 13px;
-    line-height: 34px;
-    text-align: center;
-    transition: all .2s ease;
-}
-
-.footer {
-    width: 100%;
-    margin: 160px 0 0 0;
-    border: 0;
-    box-sizing: border-box;
-    color: #666;
-    font-size: 13px;
-    font-family: tahoma;
-    text-align: center;
-    padding-bottom: 90px;
-}
