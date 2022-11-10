@@ -27,7 +27,6 @@ function Join() {
     const [confirmPasswordError, setConfirmPasswordError] = useState(false);
     const [userNickError, setUserNickError] = useState(false);
     const [userNameError, setUserNameError] = useState(false);
-    const [userNickError, setUserNickError] = useState(false);
     const [userBirthError, setUserBirthError] = useState(false);
     const [emailError, setEmailError] = useState(false);
     const [phoneNumberError, setphoneNumberError] = useState(false);
@@ -221,7 +220,6 @@ function Join() {
                                     <Form.Control maxLength={20} placeholder="아이디" value={userId} onChange={onChangeUserId} />
                                     {userIdError && <div className="invalid-input">최고 5글자 이상 영문자와 숫자로만 이루어지게 해주세요.</div>}
                                 </Col>
-                                <input type='button' value="중복확인" onClick={idConfirm}></input>
                             </Form.Group>
                             <Form.Group as={Row} className="mb-3">
                                 <Col sm>
