@@ -1,6 +1,7 @@
 package com.americatv.service;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,7 +46,7 @@ public class BoardService {
         return board;
     }
     
-    // 게시글 수정 -> signup방식으로 접근해야될거같은데 해당 컬럼 삭제하고 builder해서 넣는방법 물어봐야될듯
+    // 게시글 수정 
     public boolean updateBoard(Board board){
         
         Optional<Board> updateBoard = boardDAO.findByBoardCd(board.getBoardCd());
@@ -74,13 +75,15 @@ public class BoardService {
             System.out.println("이미 존재하지 않는 게시물을 삭제하려함.");
             return false;
         }
-        
         boardDAO.deleteByBoardCd(boardCd);
-            
-        
         return true;
     }
     
+    public List<Board> getboardlist(int cateCd, int broadcastCd){
+        List<Board> boardlist = boardDAO.findAllByCateCdAndBroadcastCd(cateCd, broadcastCd);
+        System.out.println(boardlist);
+        return boardlist;
+    }
     
     
 //      public List<Board> listALL() throws Exception;  //게시글 전체 목록
