@@ -19,7 +19,5 @@ public interface BoardDAO extends JpaRepository <Board, Integer>{
 	public void deleteByBoardCd(int boardCd);
 
 	@Transactional
-    public List<Board> findAllByCateCd(int cateCd);
-
     public List<Board> findAllByCateCdAndBroadcastCd(int cateCd, int broadcastCd);
 }
