@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.americatv.entity.Board;
 import com.americatv.entity.User;
+import com.americatv.entity.Ripple;
 import com.americatv.service.BoardService;
 import com.americatv.service.UserService;
 
@@ -60,17 +61,36 @@ public class BoardController {
         }
 
         return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
-
     }
+    
+    // 댓글달기 작성중 (유준영)
+    @PostMapping("/ripple")
+    @ApiOperation(value="댓글 작성", notes = "조회된 게시글에 댓글 작성")
+    public ResponseEntity<String> ripplepost(@RequestBody Ripple rippleDto){
+        try {
+            Ripple ripple = boardService.postRipple(rippleDto);
+            if(ripple.getUserCd() == null) {
+                return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
+            }                
+        } catch (Exception e) {
+            
+            return new ResponseEntity<String>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
+    }
+    
+    
     @GetMapping("/read/{boardCd}")
     @ApiOperation(value = "게시글 조회", notes = "작성된 게시글을 클릭하여 조회할 게시물 내용을 가져온다.", response = Board.class)
     public ResponseEntity<Optional<Board>> getBoardInfo(@PathVariable int boardCd) {
         System.out.println(boardService);
-        
         Optional<Board> board = boardService.read(boardCd);
         System.out.println(board);
+        
+        
         return ResponseEntity.ok(board);
     }
+    
     
     /*
      * 유준영 - 게시글 수정
@@ -97,8 +117,7 @@ public class BoardController {
             e.printStackTrace();
             return new ResponseEntity<String>(ERROR, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-    }
-    
+    }    
    @RequestMapping(value="/{boardCd}", method = RequestMethod.DELETE)
    @ApiOperation(value="보드코드로 게시물 삭제", notes = "보드코드를 받아 게시물을 삭제한다.", response = String.class)
    @ApiImplicitParams({ @ApiImplicitParam(name = "boardCd", value = "삭제하고싶은 boardCd", required = true) })
@@ -127,4 +146,48 @@ public class BoardController {
        System.out.println(board);
        return ResponseEntity.ok(board);
    }
+   
+   @GetMapping("/read/ripple/{boardCd}")
+   @ApiOperation(value = "댓글 리스트 조회", notes = "게시글 조회시 해당 게시글의 댓글 불러오기", response = Board.class)
+   public ResponseEntity<List<Ripple>> getripplelist(@PathVariable int boardCd){
+       
+       List<Ripple> ripple = boardService.getripplelist(boardCd);
+       return ResponseEntity.ok(ripple);
+   }
+   @RequestMapping(value ="/edit/{rippleCd}", method=RequestMethod.PUT)
+   @ApiOperation(value = "댓글 수정", notes = "댓글 내용을 수정한다, 성공 200, 에러 or 실패시 204, 500", response = Board.class)
+   public ResponseEntity<String> updateRipple(@RequestBody Ripple ripple) throws IOException {
+       try {
+           boolean ret = boardService.updateRipple(ripple);
+           if (!ret) {
+               return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
+           }
+           System.out.println("게시물 수정 성공");
+           return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
+       } catch (Exception e) {
+           System.out.println("게시물 수정 에러");
+           e.printStackTrace();
+           return new ResponseEntity<String>(ERROR, HttpStatus.INTERNAL_SERVER_ERROR);
+       }        
+   }
+   
+   @RequestMapping(value="/delete/{rippleCd}", method = RequestMethod.DELETE)
+   @ApiOperation(value="리플코드로 댓글 삭제", notes = "리플코드를 받아 리플을 삭제한다.", response = String.class)
+   @ApiImplicitParams({ @ApiImplicitParam(name = "rippleCd", value = "삭제하고싶은 rippleCd", required = true) })
+   public ResponseEntity<String> deleteRipple(@PathVariable int rippleCd) throws IOException{
+       
+       try {
+           boolean ret = boardService.deleteRipple(rippleCd);
+           if(!ret) {
+               return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
+           }
+           System.out.println("댓글 삭제 성공");
+           return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
+       } catch (Exception e) {
+           e.printStackTrace();
+           System.out.println("댓글 삭제 오류");
+           return new ResponseEntity<String>(ERROR, HttpStatus.INTERNAL_SERVER_ERROR);
+       }
+   }
+   
 }
