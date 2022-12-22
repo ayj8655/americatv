@@ -7,6 +7,7 @@ import MyPage_Main from './components/MyPage_Main';
 import MyPage_BoardWrite from './components/MyPage_BoardWrite';
 import MyPage_InfoSetting from './components/MyPage_InfoSetting';
 import MyPage_BoardList from './components/MyPage_BoardList';
+import MyPage_BoardContent from './components/MyPage_BoardContent';
 import MyPage_Template from './components/MyPage_Template';
 import Agreement from './components/Agreement';
 import Slider from './components/exSlider'
@@ -28,6 +29,7 @@ function App(){
             <Route path='/broadcast/:userid/MyPage_BoardWrite' element={<MyPage_BoardWrite/>}></Route>
             <Route path='/broadcast/:userid/MyPage_InfoSetting' element={<MyPage_InfoSetting/>}></Route>
             <Route path='/broadcast/:userid/MyPage_BoardList' element={<MyPage_BoardList/>}></Route>
+            <Route path='/broadcast/:userid/MyPage_BoardContent/:boardcd' element={<MyPage_BoardContent/>}></Route>
             <Route path='/Slider' element={<Slider/>}></Route>
             <Route path='/userInfo' element={<UserInfo/>}></Route>
           </Routes>      
