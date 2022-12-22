@@ -23,5 +23,4 @@ const Dropdown = props => {
         </article>
     )
 };
-
 export default Dropdown;

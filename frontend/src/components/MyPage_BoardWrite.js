@@ -163,7 +163,6 @@ function MyPage_BoardWrite(props) {
                     ⓒ AmericaTV Corp.
                 </div>
             </div>
-
         </>
     );
 }
