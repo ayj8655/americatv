@@ -6,7 +6,7 @@ import styles from '../css/MyPage_Template.module.css';
 function MyPage_Template(){
 
     const [closeList, setCloseList] = useState(false); // 열고접는 스위치역할
-    console.log(closeList);
+    // console.log(closeList);
     const listRef = useRef(null); 	      // useRef 로 특정 DOM 에 접근
     const listRef1 = useRef(null);
 
@@ -176,19 +176,23 @@ function MyPage_Template(){
                                 </ul>
                             </div>
                             <div className={styles.menu_list}>
+                            
+                                
                                 <h3>
                                     <button type='button' className={`${closeList ? 'close' : 'open'}`} onClick={foldList1}>
                                         <span>게시판</span>
                                     </button>
                                 </h3>
                                 <ul className={styles.content1} ref={listRef1}>
+                                    <Link to={`/broadcast/${localStorage.getItem('userId')}/MyPage_BoardList`}>
+                                        <li>
+                                            <a href='#'>
+                                                <strong>전체 게시글</strong>
+                                            </a>
+                                        </li>
+                                    </Link>
                                     <li>
-                                        <a href='#'>
-                                            <strong>전체 게시글</strong>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href='#'>일반게시판</a>
+                                        <a href={`/yjy/${localStorage.getItem('userId')}/MyPage_BoardList`}>일반게시판</a>
                                     </li>
                                     <li>
                                         <a href='#'>방명록</a>
