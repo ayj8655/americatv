@@ -20,4 +20,6 @@ public interface BoardDAO extends JpaRepository <Board, Integer>{
 
 	@Transactional
     public List<Board> findAllByCateCdAndBroadcastCd(int cateCd, int broadcastCd);
+
+    public List<Board> findByBroadcastCd(int broadcastCd);
 }

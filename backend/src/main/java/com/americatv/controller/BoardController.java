@@ -6,6 +6,7 @@ import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -45,7 +46,7 @@ public class BoardController {
     public UserService userService;
     
     @PostMapping("/post")
-    @ApiOperation(value = "게시글 작성", notes = "로그인 정보 확인하고 게시글을 작성한다", response = User.class)
+    @ApiOperation(value = "게시글 작성", notes = "로그인 정보 확인하고 게시글을 작성한다", response = Board.class)
     public ResponseEntity<String> post(@RequestBody Board postDto) {
         System.out.println(postDto.getBoardContent()+postDto.getUserCd()+postDto.getBoardTitle());
         try {
@@ -138,10 +139,14 @@ public class BoardController {
    }
    
    @GetMapping("/{broadcastCd}/{cateCd}")
-   @ApiOperation(value = "게시글 리스트 조회", notes = "카테고리 선택시 해당 카테고리의 게시글 출력", response = Board.class)
+   @ApiOperation(value = "게시글 리스트 조회", notes = "전체 게시글 및 카테고리 선택시 해당 카테고리의 게시글 출력", response = Board.class)
    public ResponseEntity<List<Board>> getBoardlist(@PathVariable int cateCd, @PathVariable int broadcastCd) {
        System.out.println(boardService);
-       
+       if(cateCd == 1) {
+           List<Board> board = boardService.getboardlistall(broadcastCd);
+           System.out.println(board);
+           return ResponseEntity.ok(board);
+       }
        List<Board> board = boardService.getboardlist(cateCd, broadcastCd);
        System.out.println(board);
        return ResponseEntity.ok(board);
@@ -190,4 +195,9 @@ public class BoardController {
        }
    }
    
+//   @GetMapping("/post/{id}")
+//   public List<BoardDTO> find(Pageable pageable) {
+//       boardService.
+//   }
+//   
 }
