@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.americatv.entity.Board;
@@ -101,6 +102,13 @@ public class BoardService {
         System.out.println(boardlist);
         return boardlist;
     }
+    
+    public List<Board> getboardlistall(int broadcastCd){
+        List<Board> boardlist = boardDAO.findByBroadcastCd(broadcastCd);
+        System.out.println(boardlist);
+        return boardlist;
+    }
+    
 
     public List<Ripple> getripplelist(int boardCd) {
         List<Ripple> ripplelist = rippleDAO.findAllByBoardCd(boardCd);
@@ -130,6 +138,7 @@ public class BoardService {
         rippleDAO.deleteByRippleCd(rippleCd);
         return true;
     }
+    
     
     
 //      public void increaseViewcnt(int bno, HttpSession session) throws Exception; //게시글 조회
