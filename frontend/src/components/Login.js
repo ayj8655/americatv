@@ -38,10 +38,17 @@ function Login() {
                 .then(res => {
                     console.log('GET SUCCESS');
                     console.log(res.data);
-                    localStorage.setItem('userId', res.data.userId);
-                    localStorage.setItem('userNick', res.data.userNick);
+
+                    localStorage.setItem('userBirth', res.data.userBirth);
                     localStorage.setItem('userCd', res.data.userCd);
                     localStorage.setItem('userEmail', res.data.userEmail);
+                    localStorage.setItem('userId', res.data.userId);
+                    localStorage.setItem('userJoinDt', res.data.userJoinDt);
+                    localStorage.setItem('userNick', res.data.userNick);
+                    localStorage.setItem('userNm', res.data.userNm);
+                    
+                   
+                    
 
                     //console.log(res.data.userId);
                     alert(res.data.userNick+'님 어서오세요');
