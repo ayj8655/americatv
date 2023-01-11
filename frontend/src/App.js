@@ -12,6 +12,7 @@ import MyPage_Template from './components/MyPage_Template';
 import Agreement from './components/Agreement';
 import Slider from './components/exSlider'
 import UserInfo from './components/userInfo';
+import Chat from './components/qwer';
 import './App.css';
 
 function App(){
@@ -32,6 +33,7 @@ function App(){
             <Route path='/broadcast/:userid/MyPage_BoardContent/:boardcd' element={<MyPage_BoardContent/>}></Route>
             <Route path='/Slider' element={<Slider/>}></Route>
             <Route path='/userInfo' element={<UserInfo/>}></Route>
+            <Route path='/qwer' element={<Chat/>}></Route>
           </Routes>      
       </BrowserRouter>
   );

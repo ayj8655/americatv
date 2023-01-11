@@ -15,10 +15,21 @@
 	<name>backend</name>
 	<description>americatv</description>
 	<properties>
-		<java.version>17</java.version>
+		<java.version>1.8</java.version>
 	</properties>
 	<dependencies>
-	
+
+
+		<!-- 웹 소켓 시작 -->
+		<!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-websocket -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-websocket</artifactId>
+			<version>2.0.4.RELEASE</version>
+		</dependency>
+		
+		
+		<!-- 웹 소켓 끝 -->
 		<!-- 스웨거 시작 -->
 		<dependency>
 			<groupId>io.springfox</groupId>
