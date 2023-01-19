@@ -420,3 +420,6 @@ button {
     text-align: center;
     padding-bottom: 90px;
 }
+.CategoryButton {
+    font-size: 17px;
+}

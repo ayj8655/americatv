@@ -22,14 +22,13 @@ function UserInfo(){
 
 
     const [userNickError, setUserNickError] = useState(false);
-    const [currentPwError, setCurrentPwError] = useState(false);
     const [newPwError, setNewPwError] = useState(false);
     const [confirmNewPwError, setConfirmNewPwError] = useState(false);
     const [emailError, setEmailError] = useState(false);
 
-    let userid = localStorage.getItem('userId');
+    const userId = localStorage.getItem('userId');
     let flag = localStorage.getItem('flag');
-    console.log(flag);
+    //console.log(flag);
 
     
 
@@ -42,6 +41,7 @@ function UserInfo(){
     };
 
     const onChangeNewPw = (e) =>{
+        console.log(e.target.value);
         const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
         if ((!e.target.value || (passwordRegex.test(e.target.value)))) setNewPwError(false);
         else setNewPwError(true);
@@ -50,13 +50,13 @@ function UserInfo(){
         else setConfirmNewPwError(true);
         setNewPw(e.target.value);
     }
-
+  
     const onChangeConfirmNewPw = (e) => {
         if (newPw === e.target.value) setConfirmNewPwError(false);
         else setConfirmNewPwError(true);
         setConfirmNewPw(e.target.value);
+        
     };
-
 
 
     const onChangeEmail = (e) => {
@@ -67,53 +67,84 @@ function UserInfo(){
     };
 
 
+    // 1. 코드가 길어져서 좀 귀찮았따, 하나하나 확인해야함
 
-    const validation = () =>{
-        if (!nick) setUserNickError(true);
-        if (!newPw) setNewPwError(true);
-        if (!confirmNewPw) setConfirmNewPwError(true);
-        if (!email) setEmail(true);
+    // 2. if로 분기 다나누고 함수도 비밀번호 공백으로 보내는 함수, 비밀번호 변경해서 보내는 함수 따로 만들기
+    const uptMyInfo = () => {
+        if(userNickError == false && emailError == false && nick && email){
+            if(currentPw.length > 0){ // 현재 비밀번호 값이 있으면 실행
+                if(newPw.length == 0){
+                    alert("새 비밀번호를 입력하세요.");
+                }else if(confirmNewPw.length == 0){
+                    alert("새 비밀번호 확인란을 입력하세요.")
+                }else{
+                        //console.log(currentPw);
+                        axiosInstance.post('/ayj/PwComfirm',{
+                        userId : userId,
+                        userPw : currentPw
+                    })
+                    .then(res => {
+                        //console.log(res.data);
+                        if(res.data == 'success'){
+                                updtPw();
+                        }else{
+                            alert("현재 비밀번호가 맞지않습니다.");
+                        }
+                    }).catch(err => {
+                        console.log(err);
+                        alert("현재 비밀번호가 맞지않습니다.");
+                    })
+                }
+            }else{ // 비밀번호 수정 안함
+                notupdtPw();
+            }
+        }else{
+            alert("닉네임 또는 이메일이 형식에 맞지 않습니다.");
+        }
 
-        if(nick && newPw && confirmNewPw && email){
-            axiosInstance.post('/ayj/confirmPw',{
-                userId : userid,
-                userPW : newPw
-            })
-            .then(res => {
-                console.log("confirmCurrentPW SUCCESS");
+    }
+    const updtPw = () =>  {
+        if(newPwError == false && confirmNewPwError == false){
+            axiosInstance.put('/ayj/',{
+                userId :  userId,
+                userPw : newPw,
+                userNick : nick,
+                userEmail : email,
+            }) 
+            .then(res =>{
                 console.log(res.data);
-                return true;
-            }).catch(err => {
-                console.log("confirmCurrentPW FALSE");
-                return false;
+                alert("회원정보가 수정되었습니다.");
+                window.location.replace('/');
+            })
+            .catch(err =>{
+                console.log(err);
             })
         }else{
-            return false;
+            alert("새 비밀번호와 새 비밀번호 확인이 같지않습니다.");
         }
     }
-    
-    const uptMyInfo = () => {
-       if(validation()){
-        
+
+      const notupdtPw = () =>  {
+        if(currentPw.length == 0 && newPw.length == 0 && confirmNewPw.length == 0){
         axiosInstance.put('/ayj/',{
-            userId :  localStorage.getItem('userId'),
-            userPw : newPw,
+            userId :  userId,
+            userPw : "",
             userNick : nick,
             userEmail : email,
-            
         }) 
         .then(res =>{
-            console.log("PUT SUCCESS");
+            console.log(res.data);
             alert("회원정보가 수정되었습니다.");
+            window.location.replace('/');
         })
         .catch(err =>{
             console.log(err);
-            
         })
-    }else{
-       console.log("validation() is not true");
+        }else{
+            alert("비밀번호 변경을 원하시면 나머지를 입력해주세요.");
+        }
     }
-}
+
 
     return(
     <>
@@ -122,7 +153,7 @@ function UserInfo(){
             닉네임 <input type='text' defaultValue={nick} onChange={onChangeUserNick}></input>
             {userNickError && <div className="invalid-input">최소 2글자 이상 문자와 숫자로만 이루어지게 해주세요.</div>}
             <br></br>
-            현재 비밀번호 <input type='password'></input><br></br>
+            현재 비밀번호 <input type='password' onChange={(e) => setPw(e.target.value)}></input><br></br>
             새 비밀번호   <input type='password' value={newPw} onChange={onChangeNewPw}></input>
             {newPwError && <div className="invalid-input">문자, 숫자를 조합하여 8자 이상으로 입력해주세요. </div>}
             <br></br>
@@ -138,7 +169,6 @@ function UserInfo(){
     </>
     )
 }
-
 
 
 export default UserInfo;

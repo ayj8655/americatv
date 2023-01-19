@@ -156,7 +156,7 @@ function Join() {
 
     const checkId = (e) => { 
         if(userIdValidation()) {
-            axios.get('/ayj/pass/confirmId/' + `${userId}`)
+            axiosInstance.get('/ayj/pass/confirmId/' + `${userId}`)
                 .then(res => {
                     if(res.status == 204) {
                         alert("중복된 id입니다.")
