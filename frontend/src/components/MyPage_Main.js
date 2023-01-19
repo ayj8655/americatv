@@ -1,7 +1,6 @@
 import React, {useState, useEffect} from 'react';
-
-import {useHistory, useParams, useLocation, useNavigate} from 'react-router-dom';
-import { Link } from 'react-router-dom';
+import {useParams, useLocation, useNavigate} from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import styles from '../css/MyPage_Main.module.css';
 import MyPage_Template from '../components/MyPage_Template';
 import axiosInstance from '../axiosConfig';
@@ -25,7 +24,6 @@ function MyPage_Main() {
     useEffect(()=>{
         window.addEventListener('scroll', updateScroll);
         console.log(userid);
-
             
         axiosInstance.get('/broadcast/' + `${userid}`)
         .then(res => {
@@ -41,7 +39,6 @@ function MyPage_Main() {
             //console.log('fail');
             }
         })
-
     },[]);
     
     return (
@@ -73,11 +70,12 @@ function MyPage_Main() {
                                         <span>{localStorage.getItem('broadcastMyMessage')}</span>
 
                                     </p>
-                                    <Link to="/MyPage_InfoSetting">
+                                    <Link to="/broadcast/jsm/MyPage_InfoSetting">
                                         <button type='button' className={styles.modify}>
                                             <span>수정</span>
                                         </button>
                                     </Link>
+                                    
                                 </div>
                             </div>
                             <div className={styles.items}>

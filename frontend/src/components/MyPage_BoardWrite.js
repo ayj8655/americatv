@@ -21,8 +21,6 @@ function MyPage_BoardWrite(props) {
                 localStorage.setItem('boardContent', res.data.boardContent);
             })
     };
-
-
     
     return (
     <>

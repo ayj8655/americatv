@@ -1,21 +1,25 @@
 import React, {useState, useEffect} from 'react';
 
-import {Link, useHistory, useParams, useLocation, useNavigate} from 'react-router-dom';
+import {Link, useHistory, useParams, useNavigate} from 'react-router-dom';
 import styles from '../css/MyPage_BoardList.module.css';
 import MyPage_Template from '../components/MyPage_Template';
 import axiosInstance from '../axiosConfig.js'
+import MyPage_BoardContent from './MyPage_BoardContent';
 
 
 function MyPage_BoardList() {
 
     const [boardTitle, setboardTitle] = useState([]);
+    const [cateCd, setcateCd] = useState([]);
+    const [userCd, setuserCd] = useState([]);
     const [boardDt, setboardDt] = useState([]);
     const [boardRecommend, setboardRecommend] = useState([]);
     const [boardView, setboardView] = useState([]);
-
     const [boarLength, setboarLength] = useState([]);
-
     const [boardList, setboardList] = useState([]);
+    const [boardCd, setboardCd] = useState([]);
+    
+    const {boardCd1} = useParams();
     
 
     useEffect(()=>{
@@ -31,10 +35,19 @@ function MyPage_BoardList() {
             setboarLength(res.data.length);
 
             for(let i=0; i<res.data.length; i++){
+                
                 setboardTitle(res.data[i].boardTitle);
+                setcateCd(res.data[i].cateCd);
+                if(res.data[i].cateCd == 100){
+                    res.data[i].cateCd = "일반게시판";
+                } else if(res.data[i].cateCd == 200){
+                    res.data[i].cateCd = "공지사항";
+                }
+                setcateCd(res.data[i].userCd);
                 setboardDt(res.data[i].boardDt.substring(0,10));
                 setboardRecommend(res.data[i].boardRecommend);
                 setboardView(res.data[i].boardView);
+                setboardCd(res.data[i].boardCd);
             }
         })
         .catch(err =>{
@@ -44,29 +57,38 @@ function MyPage_BoardList() {
         })
 
     },[]);
+
+    const Search = (data) => {
+        console.log(data);
+        localStorage.setItem("boardCd1", data);
+    }
     
     function repeatList(boardList) {
         let arr = [];
         for(let i=0; i<boarLength; i++){
             arr.push(
-                <tr>
+                <tr key={i}>
                     <td className={styles.subject}>
                         <div className={styles.categoty}>
-                            <span>공지사항</span>
+                            <span>{boardList[i].cateCd}</span>
                         </div>
                         <div className={styles.title}>
-                            {/* <Link to={`/broadcast/${localStorage.getItem('userId')}/MyPage_BoardContent/${boardList[i].boardCd}`}> */}
-                                <a href={`/broadcast/${localStorage.getItem('userId')}/MyPage_BoardContent/${boardList[i].boardCd}`}>{boardList[i].boardTitle}</a>
-                            {/* </Link> */}
+                            <Link to={`/broadcast/${localStorage.getItem('userId')}/MyPage_BoardContent/${boardList[i].boardCd}`}>
+                                {boardList[i].boardTitle}
+                                {/* <a href={`/broadcast/${localStorage.getItem('userId')}/MyPage_BoardContent/${boardList[i].boardCd}`}>
+                                    {boardList[i].boardTitle}
+                                </a> */}
+                            </Link>
                         </div>
                     </td>
-                    <td className={styles.nick}></td>
+                    <td className={styles.nick}>{boardList[i].userCd}</td>
                     <td>{boardList[i].boardDt.substring(0,10)}</td>
                     <td>{boardList[i].boardRecommend}</td>
                     <td>{boardList[i].boardView}</td>
                 </tr>
             )
         }
+        
         console.log(arr[boardTitle]);
         return arr;
     }
