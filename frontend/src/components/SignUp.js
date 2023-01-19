@@ -7,6 +7,7 @@ import Container from 'react-bootstrap/Container';
 import { Link } from 'react-router-dom'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../css/Signup.module.css';
+import axiosInstance from '../axiosConfig';
 import axios from 'axios'
 
 
@@ -16,6 +17,7 @@ function Join() {
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [userName, setUserName] = useState("");
+    const [userNick, setUserNick] = useState("");
     const [userBirth, setUserBirth] = useState("");
     const [email, setEmail] = useState("");
     const [phoneNumber, setphoneNumber] = useState("");
@@ -23,10 +25,12 @@ function Join() {
     const [userIdError, setUserIdError] = useState(false);
     const [passwordError, setPasswordError] = useState(false);
     const [confirmPasswordError, setConfirmPasswordError] = useState(false);
+    const [userNickError, setUserNickError] = useState(false);
     const [userNameError, setUserNameError] = useState(false);
     const [userBirthError, setUserBirthError] = useState(false);
     const [emailError, setEmailError] = useState(false);
     const [phoneNumberError, setphoneNumberError] = useState(false);
+    const [userIdConfirm, setuserIdConfirm] = useState(false);
 
     const onChangeUserId = (e) => {
         const userIdRegex = /^[A-Za-z0-9+]{5,}$/;
@@ -51,6 +55,13 @@ function Join() {
     const onChangeUserName = (e) => {
         setUserNameError(false);
         setUserName(e.target.value)
+    };
+
+    const onChangeUserNick = (e) => {
+        const UserNickRegex = /^(?=.*[a-z0-9가-힣])[a-z0-9가-힣]{2,16}$/i;
+        if (!e.target.value || UserNickRegex.test(e.target.value)) setUserNickError(false);
+        else setUserNickError(true);
+        setUserNick(e.target.value);
     };
 
     const onChangeUserBirth = (e) => {
@@ -79,11 +90,14 @@ function Join() {
         if (!password) setPasswordError(true);
         if (!confirmPassword) setConfirmPasswordError(true);
         if (!userName) setUserNameError(true);
+        if (!userNick) setUserNickError(true);
         if (!userBirth) setUserBirthError(true);
         if (!email) setEmailError(true);
         if (!phoneNumber) setphoneNumberError(true);
+        if (!userIdConfirm) setuserIdConfirm(true);
 
-        if (userId && password && confirmPassword && userName && email && phoneNumber) return true;
+
+        if (userId && password && confirmPassword && userName && userNick && email && phoneNumber) return true;
         else return false;
     }
 
@@ -105,13 +119,19 @@ function Join() {
         else return false;
     }
 
+    const userNickValidation = () => {
+        if (!userNick) setUserNickError(true);
+        if (userNick) return true;
+        else return false;
+    }
+
     const onSubmit = (e) => {
         if (validation()) {
             axios.post('/ayj/signup', {
                 userId: userId,
                 userPw: password,
                 userNm: userName,
-                userNick : "nick",
+                userNick : userNick,
                 userBirth: userBirth,
                 userEmail: email,
                 userPhone: phoneNumber
@@ -136,12 +156,25 @@ function Join() {
 
     const checkId = (e) => { 
         if(userIdValidation()) {
-            axios.get('/ayj/pass/confirmId/' + `${userId}`)
+            axiosInstance.get('/ayj/pass/confirmId/' + `${userId}`)
                 .then(res => {
                     if(res.status == 204) {
                         alert("중복된 id입니다.")
                     } else if (res.status == 200) {
                         alert("사용 가능한 ID입니다.")
+                    }
+                })
+        }
+    }
+
+    const checkUserNick = (e) => { 
+        if(userNickValidation()) {
+            axios.get('/ayj/pass/confirmNick/' + `${userNick}`)
+                .then(res => {
+                    if(res.status == 204) {
+                        alert("중복된 닉네임입니다.")
+                    } else if (res.status == 200) {
+                        alert("사용 가능한 닉네임입니다.")
                     }
                 })
         }
@@ -174,8 +207,8 @@ function Join() {
     }
     
     return (
-        <body>
-            <form>
+        
+           <>
                 <div className='SignupLogo'>
                     <h2><Link to="/" className="signup_link_main">America TV</Link></h2>
                 </div>
@@ -185,25 +218,31 @@ function Join() {
                             <Form.Group as={Row} className="mb-3">
                                 <Col sm>
                                     <Form.Control maxLength={20} placeholder="아이디" value={userId} onChange={onChangeUserId} />
-                                    {userIdError && <div class="invalid-input">최고 5글자 이상 영문자와 숫자로만 이루어지게 해주세요.</div>}
+                                    {userIdError && <div className="invalid-input">최고 5글자 이상 영문자와 숫자로만 이루어지게 해주세요.</div>}
                                 </Col>
                             </Form.Group>
                             <Form.Group as={Row} className="mb-3">
                                 <Col sm>
                                     <Form.Control maxLength={20} type="password" placeholder="비밀번호" value={password} onChange={onChangePassword} />
-                                    {passwordError && <div class="invalid-input">문자, 숫자를 조합하여 8자 이상으로 입력해주세요. </div>}
+                                    {passwordError && <div className="invalid-input">문자, 숫자를 조합하여 8자 이상으로 입력해주세요. </div>}
                                 </Col>
                             </Form.Group>
                             <Form.Group as={Row} className="mb-3">
                                 <Col sm>
                                     <Form.Control maxLength={20} type="password" placeholder="비밀번호 확인" value={confirmPassword} onChange={onChangeConfirmPassword} />
-                                    {confirmPasswordError && <div class="invalid-input">비밀번호가 맞지 않습니다.</div>}
+                                    {confirmPasswordError && <div className="invalid-input">비밀번호가 맞지 않습니다.</div>}
                                 </Col>
                             </Form.Group>
                             <Form.Group as={Row} className="mb-3">
                                 <Col sm>
                                     <Form.Control maxLength={20} placeholder="이름" value={userName} onChange={onChangeUserName} />
                                     {userNameError && <div class="invalid-input">Required.</div>}
+                                </Col>
+                            </Form.Group>
+                            <Form.Group as={Row} className="mb-3">
+                                <Col sm>
+                                    <Form.Control maxLength={20} placeholder="닉네임" value={userNick} onChange={onChangeUserNick} />
+                                    {userNickError && <div class="invalid-input">2자 이상 16자 이하, 영어 또는 숫자 또는 한글로 구성하세요.</div>}
                                 </Col>
                             </Form.Group>
                             <Form.Group as={Row} className="mb-3">
@@ -215,13 +254,13 @@ function Join() {
                             <Form.Group as={Row} className="mb-3">
                                 <Col sm>
                                     <Form.Control maxLength={50} type="input" placeholder="이메일" value={email} onChange={onChangeEmail} />
-                                    {emailError && <div class="invalid-input">이메일 형식이 올바르지 않습니다. 다시 확인해주세요.</div>}
+                                    {emailError && <div className="invalid-input">올바른 이메일 형태가 아닙니다.</div>}
                                 </Col>
                             </Form.Group>
                             <Form.Group as={Row} className="mb-3">
                                 <Col sm>
                                     <Form.Control maxLength={50} type="input" placeholder="휴대폰" value={phoneNumber} onChange={onChangePhoneNumber} />
-                                    {phoneNumberError && <div class="invalid-input">잘못된 형식의 번호입니다.</div>}
+                                    {phoneNumberError && <div className="invalid-input">잘못된 형식의 번호입니다.</div>}
                                 </Col>
                             </Form.Group>
                             <br />
@@ -233,7 +272,12 @@ function Join() {
 
                             <div className="d-grid gap-1">
                                 <Button variant="secondary" onClick={checkId}>
-                                    중복체크
+                                    ID 중복체크
+                                </Button>
+                            </div>
+                            <div className="d-grid gap-1">
+                                <Button variant="secondary" onClick={checkUserNick}>
+                                    닉네임 중복체크
                                 </Button>
                             </div>
                             <div className="d-grid gap-1">
@@ -251,8 +295,7 @@ function Join() {
                         <span className="text">기존 계정이 존재하나요? <Link to="/login" className="link">Sign In</Link></span>
                     </Container>
                 </div>
-            </form>
-        </body>
+                </>
     );
 }
 

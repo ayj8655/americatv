@@ -109,7 +109,9 @@ public class UserService {
 
 		updateUser.ifPresent(selectUser -> {
 
-			selectUser.setUserPw((passwordEncoder.encode(user.getUserPw())));
+			if (!user.getUserPw().isEmpty()) {
+                selectUser.setUserPw((passwordEncoder.encode(user.getUserPw())));
+            }
 			selectUser.setUserEmail((user.getUserEmail()));
 			selectUser.setUserNick((user.getUserNick()));
 			userDAO.save(selectUser);

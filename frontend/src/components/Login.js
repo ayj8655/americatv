@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axiosInstance from '../axiosConfig';
 import styles from '../css/Login.module.css';
@@ -38,8 +38,18 @@ function Login() {
                 .then(res => {
                     console.log('GET SUCCESS');
                     console.log(res.data);
+
+                    localStorage.setItem('userBirth', res.data.userBirth);
+                    localStorage.setItem('userCd', res.data.userCd);
+                    localStorage.setItem('userEmail', res.data.userEmail);
                     localStorage.setItem('userId', res.data.userId);
+                    localStorage.setItem('userJoinDt', res.data.userJoinDt);
                     localStorage.setItem('userNick', res.data.userNick);
+                    localStorage.setItem('userNm', res.data.userNm);
+                    
+                   
+                    
+
                     //console.log(res.data.userId);
                     alert(res.data.userNick+'님 어서오세요');
                     navigate('/'); 

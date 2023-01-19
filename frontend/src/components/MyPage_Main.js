@@ -1,17 +1,20 @@
 import React, {useState, useEffect} from 'react';
-
-import {Link, useHistory, useParams, useLocation, useNavigate} from 'react-router-dom';
+import {useParams, useLocation, useNavigate} from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import styles from '../css/MyPage_Main.module.css';
 import MyPage_Template from '../components/MyPage_Template';
-import axiosInstance from '../axiosConfig.js'
+import axiosInstance from '../axiosConfig';
 
-
-const MyPage_Main = () => {
+function MyPage_Main() {
 
     const {userid} = useParams();
 
+   // const[change, setchange] = useState(localStorage.getItem('Message'));
+   // const[change2, setchange2] = useState(localStorage.getItem('Name'));
     const location = useLocation();
     const navigate = useNavigate();
+    //console.log(location);
+
 
     const [scrollPosition, setScrollPosition] = useState(0);
     const updateScroll = () => {
@@ -21,7 +24,6 @@ const MyPage_Main = () => {
     useEffect(()=>{
         window.addEventListener('scroll', updateScroll);
         console.log(userid);
-
             
         axiosInstance.get('/broadcast/' + `${userid}`)
         .then(res => {
@@ -32,11 +34,11 @@ const MyPage_Main = () => {
         })
         .catch(err =>{
             if(err.response.status == 500){
+
             alert('없는 방송국이거나 주소가 잘못되었을 수 있습니다.');
             //console.log('fail');
             }
         })
-
     },[]);
     
     return (
@@ -52,7 +54,9 @@ const MyPage_Main = () => {
                             <div className={styles.info_title}>
                                 <div className={styles.title_area}>
                                     <h2>
+
                                         <a href='#'>{localStorage.getItem('broadcastNm')}</a>
+
                                     </h2>
                                     <div className={styles.info_broadcast}>
                                         <button type='button' tip='방송국 정보'>
@@ -62,13 +66,16 @@ const MyPage_Main = () => {
                                 </div>
                                 <div className={styles.explanation}>
                                     <p>
+
                                         <span>{localStorage.getItem('broadcastMyMessage')}</span>
+
                                     </p>
-                                    <Link to="/MyPage_InfoSetting">
+                                    <Link to="/broadcast/jsm/MyPage_InfoSetting">
                                         <button type='button' className={styles.modify}>
                                             <span>수정</span>
                                         </button>
                                     </Link>
+                                    
                                 </div>
                             </div>
                             <div className={styles.items}>

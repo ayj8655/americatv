@@ -1,6 +1,7 @@
 package com.americatv.controller;
 
 import java.io.IOException;
+import java.util.Objects;
 import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,6 +16,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -49,18 +51,25 @@ public class UserController {
 	private final TokenProvider tokenProvider;
 	private final AuthenticationManagerBuilder authenticationManagerBuilder;
 
-	public UserController(TokenProvider tokenProvider, AuthenticationManagerBuilder authenticationManagerBuilder) {
+	@Autowired
+	private final PasswordEncoder passwordEncoder;
+	
+	public UserController(TokenProvider tokenProvider, AuthenticationManagerBuilder authenticationManagerBuilder, PasswordEncoder passwordEncoder) {
 		this.tokenProvider = tokenProvider;
 		this.authenticationManagerBuilder = authenticationManagerBuilder;
+		this.passwordEncoder = passwordEncoder;
 	}
 
+	
+
+	
+	
 	@Autowired
 	public UserService userService;
 	public BookMarkService bookMarkService;
 
 	@Autowired
 	public BlackListService blacklistservice;
-
 
 	@GetMapping("/hello")
 	@ApiOperation(value = "API 테스트용", notes = "Hello 반환하면 정상")
@@ -73,7 +82,7 @@ public class UserController {
 	public ResponseEntity<User> signup(@Valid @RequestBody User userDto) {
 		return ResponseEntity.ok(userService.signup(userDto));
 	}
-	
+
 	@PostMapping("/authenticate")
 	@ApiOperation(value = "로그인 및 인증", notes = "로그인 및 인증 토큰을 헤더 및 바디를 통해 반환", response = TokenDto.class)
 	public ResponseEntity<TokenDto> authorize(@Valid @RequestBody LoginDto loginDto) {
@@ -93,7 +102,7 @@ public class UserController {
 
 		return new ResponseEntity<>(new TokenDto(jwt), httpHeaders, HttpStatus.OK);
 	}
-	
+
 	@RequestMapping(value = "/{userId}", method = RequestMethod.DELETE)
 	@PreAuthorize("hasAnyRole('USER','ADMIN')")
 	@ApiOperation(value = "유저아이디로 회원 탈퇴", notes = "유저아이디를 받아 해당 유저 탈퇴", response = String.class)
@@ -116,9 +125,6 @@ public class UserController {
 			return new ResponseEntity<String>(ERROR, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
-	
-	
-	
 
 	// 유저 권한을 가진 사람이 본인 정보 가져올때 사용
 	@GetMapping("/user")
@@ -206,11 +212,11 @@ public class UserController {
 			return new ResponseEntity<String>(ERROR, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
-	
+
 	@RequestMapping(value = "/", method = RequestMethod.PUT)
 	@PreAuthorize("hasAnyRole('USER','ADMIN')")
 	@ApiOperation(value = "회원 정보 수정", notes = "수정 가능한 정보는 비밀번호, 이메일, 닉네임 3개만 가능, 성공시 200, 에러 or 실패시 204,500")
-		public ResponseEntity<String> updateUser(@RequestBody User user) throws IOException {
+	public ResponseEntity<String> updateUser(@RequestBody User user) throws IOException {
 		try {
 			boolean ret = userService.updateByUserId(user);
 			if (!ret) {
@@ -224,6 +230,31 @@ public class UserController {
 			e.printStackTrace();
 			return new ResponseEntity<String>(ERROR, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
+	}
+	
+	
+	@PostMapping("/PwComfirm")
+	@PreAuthorize("hasAnyRole('USER','ADMIN')")
+	@ApiOperation(value = "유저 정보 수정 전 본인 확인", notes = "11111111")
+	public ResponseEntity<String> PwComfirm(HttpServletRequest request, @RequestBody LoginDto loginDto) {
+		try {
+			Optional<User> user = userService.getMyUserWithAuthorities();
+
+			if (!Objects.equals(user.get().getUserId(),loginDto.getUserId())) 
+				return new ResponseEntity<String>(FAIL, HttpStatus.INTERNAL_SERVER_ERROR);
+			
+			UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
+					loginDto.getUserId(), loginDto.getUserPw());
+
+			Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
+	
+			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
+
+		} catch (Exception e) {
+			System.out.println("회원정보 검색 오류");
+			return new ResponseEntity<String>(FAIL, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+//			return ResponseEntity.ok(userService.getMyUserWithAuthorities());
 	}
 	
 }
