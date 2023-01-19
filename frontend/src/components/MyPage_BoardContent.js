@@ -1,11 +1,40 @@
 import React, {useState, useEffect} from 'react';
 
-import {Link, useHistory, useParams, useLocation, useNavigate} from 'react-router-dom';
+import {Link, useHistory, useParams, useNavigate, redirect} from 'react-router-dom';
 import styles from '../css/MyPage_BoardContent.module.css';
 import MyPage_Template from '../components/MyPage_Template';
-
+import axiosInstance from '../axiosConfig';
+import { useLocation } from "react-router-dom"
 
 function MyPage_BoardContent() {
+    const location = useLocation();
+    const navigate = useNavigate();
+
+    const {boardcd} = useParams();
+    useEffect(()=>{
+        console.log(boardcd);
+            
+        axiosInstance.get('/yjy/read/' + `${boardcd}`)
+        .then(res => {
+            navigate(location);
+            console.log(res.data);
+            localStorage.setItem("cateCd", res.data.cateCd);
+            localStorage.setItem("boardTitle", res.data.boardTitle);
+            localStorage.setItem("userCd", res.data.userCd);
+            localStorage.setItem("boardDt", res.data.boardDt.substring(0,19).replace("T"," "));
+            localStorage.setItem("boardView", res.data.boardView);
+            localStorage.setItem("boardContent", res.data.boardContent);
+            console.log(res.data.boardTitle);
+        })
+        .catch(err =>{
+            if(err.response.status == 500){
+
+            alert('없는 방송국이거나 주소가 잘못되었을 수 있습니다.');
+            //console.log('fail');
+            }
+        })
+
+    },[]);
 
     return (
     <>
@@ -46,24 +75,24 @@ function MyPage_BoardContent() {
                 </section>
                 <article className={styles.boardcontent}>
                     <div className={styles.boardcontent1}>
-                        <div className={styles.boardcontent2}>
+                        <div className={styles.boardcontent2}>  
                             <section className={styles.boardcontent_header}>
-                                <a className={styles.category}>자유 게시판</a>
-                                <h2 className={styles.title}>권혁락의 게시글</h2>
+                                <a className={styles.category}>test1{localStorage.getItem('cateCd')}</a>
+                                <h2 className={styles.title}>{localStorage.getItem('boardTitle')}</h2>
                                 <div className={styles.author}>
                                     <div className={styles.author_img}></div>
                                     <div className={styles.author_info}>
                                         <div className={styles.author_nick}>
-                                            <p>리오넬혁시<em>(narak0605)</em></p>
+                                            <p>{localStorage.getItem('userCd')}<em>(narak0605)</em></p>
                                         </div>
-                                        <span>2022-12-22 22:11:00</span>
-                                        <span><em>조회</em>69</span>
+                                        <span>{localStorage.getItem('boardDt')}</span>
+                                        <span><em>조회</em>{localStorage.getItem('boardView')}</span>
                                     </div>
                                 </div>
                             </section>
                             <section className={styles.boardcontent_detail}>
                                 <div className={styles.text_box}>
-                                    안녕하세요. 과대 권혁락입니다.
+                                {localStorage.getItem('boardContent')}
                                 </div>
                             </section>
                         </div>

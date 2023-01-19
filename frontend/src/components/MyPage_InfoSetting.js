@@ -37,7 +37,7 @@ function MyPage_InfoSetting() {
                             <dd>
                                 <div className={styles.col_grid}>
                                     <div className={styles.grid_start}>
-                                        <input type='text' className={styles.station_name} value={localStorage.getItem('userNick')}/>
+                                        <input type='text' className={styles.station_name} defaultValue={localStorage.getItem('userNick')}/>
                                     </div>
                                     <div className={styles.grid_end}>
                                         <button type='button' className={styles.btn_basic_blue}>
@@ -87,8 +87,8 @@ function MyPage_InfoSetting() {
                             <dt>프로필 메시지</dt>
                             <dd>
                                 <div className={styles.textarea}>
-                                    <textarea className={styles.profile_text} placeholder='방문 유저에게 전하고 싶은 이야기를 작성해 보세요.' value={localStorage.getItem('broadcastMyMessage')} maxlength='150'></textarea>
-                                    <input type='text' className={styles.byte} readonly value='0 / 150'></input>
+                                    <textarea className={styles.profile_text} placeholder='방문 유저에게 전하고 싶은 이야기를 작성해 보세요.' defaultValue={localStorage.getItem('broadcastMyMessage')} maxLength='150'></textarea>
+                                    <input type='text' className={styles.byte} defaultValue='0 / 150'></input>
                                 </div>
                             </dd>
                             <div className={styles.profile_upload_btn}>
