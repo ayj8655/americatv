@@ -3,6 +3,7 @@ package com.americatv.controller;
 import java.io.IOException;
 import java.util.Optional;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +36,8 @@ import com.americatv.service.BlackListService;
 import com.americatv.service.BroadcastService;
 import com.americatv.service.UserService;
 
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 
 @RestController
@@ -45,7 +48,6 @@ public class BroadcastController {
 	private static final String FAIL = "fail";
 	private static final String ERROR = "error";
 	
-
   @Autowired
 	public BlackListService blackListService;
 
@@ -72,6 +74,40 @@ public class BroadcastController {
 		return ResponseEntity.ok(blackListService.getUblacklist(user_cd));
 	}
 
+	@RequestMapping(value = "/blackList", method= {RequestMethod.POST})
+	@ApiOperation(value = "블랙유저 추가", notes = "cd는 자동생성 User랑 usercd만 변경", response = TokenDto.class)
+	public ResponseEntity<BlackList> postuser(@Valid @RequestBody BlackList blackDto){	 
+	    
+	   System.out.println(blackDto.getBlackUser());
+	       
+	    
+	   return ResponseEntity.ok(blackListService.insertblackuser(blackDto));
+	    
+	}
+	
+	@RequestMapping(value="/{black_user}", method = RequestMethod.DELETE)
+	@ApiOperation(value = "블랙해제", notes = "black_user를 받아 블랙유저 해제", response = TokenDto.class)
+	@ApiImplicitParams({ @ApiImplicitParam(name = "black_user", value = "해제하고싶은 black_user", required = true) })
+	   public ResponseEntity<String> deleteBoard(@PathVariable String black_user, HttpServletRequest request) throws IOException{
+	       
+	       try {
+	           Optional<User> user = userService.getMyUserWithAuthorities();
+	           
+	           System.out.println(user.get().getUserCd());
+	           
+	           boolean ret = blackListService.deleteblackuser(user.get().getUserCd(), black_user);
+	           if(!ret) {
+	               return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
+	           }
+	           System.out.println("블랙유저 삭제 성공");
+	           return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
+	       } catch (Exception e) {
+	           e.printStackTrace();
+	           System.out.println("블랙유저 삭제 오류");
+	           return new ResponseEntity<String>(ERROR, HttpStatus.INTERNAL_SERVER_ERROR);
+	       }
+	   }
+	
 	@GetMapping("/{userId}")
 	public ResponseEntity<Optional<Broadcast>> GetBroadcastInfo(@PathVariable String userId){
 		System.out.println(userId);
