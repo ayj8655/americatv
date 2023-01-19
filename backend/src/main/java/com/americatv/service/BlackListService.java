@@ -44,6 +44,21 @@ public class BlackListService {
        
    }
    
+   public boolean deleteblackuser(int user_cd , String black_user) {
+       Optional<BlackList> deletblack = blackListDAO.findByUserCdAndBlackUser(user_cd , black_user);
+       
+       if(!deletblack.isPresent()) {
+           System.out.println("이미 존재하지 않는 블랙유저 삭제하려함.");
+           return false;
+       }
+       
+       blackListDAO.deleteByBlackCd(deletblack.get().getBlackCd());
+              
+       return true;
+       
+   }
+      
+   
 	public Optional<BlackList> findByUserCd(int user_cd) {
 		Optional<BlackList> blacklist = blackListDAO.findByUserCd(user_cd);
 		
@@ -71,6 +86,7 @@ public class BlackListService {
     public Optional<BlackList> getUblacklist(int user_cd) {
         return blackListDAO.findByUserCd(user_cd);
     }
+
 	
 	
 	

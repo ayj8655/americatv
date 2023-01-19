@@ -21,6 +21,6 @@ public class LoginDto {
 
    @NotNull
    @Size(min = 3, max = 100)
-   @ApiModelProperty(example = "1234")
+   @ApiModelProperty(example = "wjstkdals1")
    private String userPw;
 }
